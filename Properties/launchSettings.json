@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SteveBot-Rebuild": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

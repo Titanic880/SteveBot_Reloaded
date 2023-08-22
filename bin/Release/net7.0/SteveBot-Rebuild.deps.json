@@ -1,0 +1,43 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v7.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v7.0": {
+      "SteveBot-Rebuild/1.0.0": {
+        "dependencies": {
+          "Microsoft.NET.Build.Containers": "7.0.400",
+          "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "1.19.5"
+        },
+        "runtime": {
+          "SteveBot-Rebuild.dll": {}
+        }
+      },
+      "Microsoft.NET.Build.Containers/7.0.400": {},
+      "Microsoft.VisualStudio.Azure.Containers.Tools.Targets/1.19.5": {}
+    }
+  },
+  "libraries": {
+    "SteveBot-Rebuild/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.NET.Build.Containers/7.0.400": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-4DfJuN5nCYmfIALEuSKeIEiSNA1oukrT5KQ67M4/gW2Y/ElnrMaFBypgo8JwnMHHTaxrAxp3KPtDUrIXSKhW9w==",
+      "path": "microsoft.net.build.containers/7.0.400",
+      "hashPath": "microsoft.net.build.containers.7.0.400.nupkg.sha512"
+    },
+    "Microsoft.VisualStudio.Azure.Containers.Tools.Targets/1.19.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Kaa1rBZdJFq5A0qgAcl6Bmk/UqLXTq9acEqxUlPEBA8oscmakLfkvuSXfG7Wa9t1/keaT85EuuDNgOo+Z9VYOQ==",
+      "path": "microsoft.visualstudio.azure.containers.tools.targets/1.19.5",
+      "hashPath": "microsoft.visualstudio.azure.containers.tools.targets.1.19.5.nupkg.sha512"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "A10WyIpssHWT4uULHYCfGZGOxO6FYq4UPiIrsy0Gbxvg/0XNxg7zr5DbbbtjdJR/ifATDOpzKP9/YyRcTmNrlw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Mitch\\Desktop\\Coding\\C#\\SteveBot-Rebuild\\SteveBot-Rebuild.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Mitch\\.nuget\\packages\\microsoft.net.build.containers\\7.0.400\\microsoft.net.build.containers.7.0.400.nupkg.sha512",
+    "C:\\Users\\Mitch\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.19.5\\microsoft.visualstudio.azure.containers.tools.targets.1.19.5.nupkg.sha512",
+    "C:\\Users\\Mitch\\.nuget\\packages\\microsoft.netcore.app.runtime.linux-x64\\7.0.10\\microsoft.netcore.app.runtime.linux-x64.7.0.10.nupkg.sha512",
+    "C:\\Users\\Mitch\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.linux-x64\\7.0.10\\microsoft.aspnetcore.app.runtime.linux-x64.7.0.10.nupkg.sha512",
+    "C:\\Users\\Mitch\\.nuget\\packages\\microsoft.netcore.app.host.linux-x64\\7.0.10\\microsoft.netcore.app.host.linux-x64.7.0.10.nupkg.sha512"
+  ],
+  "logs": []
+}

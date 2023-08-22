@@ -1,0 +1,14 @@
+C:\Users\Mitch\Desktop\Coding\C#\SteveBot-Rebuild\bin\Release\net7.0\SteveBot-Rebuild.exe
+C:\Users\Mitch\Desktop\Coding\C#\SteveBot-Rebuild\bin\Release\net7.0\SteveBot-Rebuild.deps.json
+C:\Users\Mitch\Desktop\Coding\C#\SteveBot-Rebuild\bin\Release\net7.0\SteveBot-Rebuild.runtimeconfig.json
+C:\Users\Mitch\Desktop\Coding\C#\SteveBot-Rebuild\bin\Release\net7.0\SteveBot-Rebuild.dll
+C:\Users\Mitch\Desktop\Coding\C#\SteveBot-Rebuild\bin\Release\net7.0\SteveBot-Rebuild.pdb
+C:\Users\Mitch\Desktop\Coding\C#\SteveBot-Rebuild\obj\Release\net7.0\SteveBot-Rebuild.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Mitch\Desktop\Coding\C#\SteveBot-Rebuild\obj\Release\net7.0\SteveBot-Rebuild.AssemblyInfoInputs.cache
+C:\Users\Mitch\Desktop\Coding\C#\SteveBot-Rebuild\obj\Release\net7.0\SteveBot-Rebuild.AssemblyInfo.cs
+C:\Users\Mitch\Desktop\Coding\C#\SteveBot-Rebuild\obj\Release\net7.0\SteveBot-Rebuild.csproj.CoreCompileInputs.cache
+C:\Users\Mitch\Desktop\Coding\C#\SteveBot-Rebuild\obj\Release\net7.0\SteveBot-Rebuild.dll
+C:\Users\Mitch\Desktop\Coding\C#\SteveBot-Rebuild\obj\Release\net7.0\refint\SteveBot-Rebuild.dll
+C:\Users\Mitch\Desktop\Coding\C#\SteveBot-Rebuild\obj\Release\net7.0\SteveBot-Rebuild.pdb
+C:\Users\Mitch\Desktop\Coding\C#\SteveBot-Rebuild\obj\Release\net7.0\SteveBot-Rebuild.genruntimeconfig.cache
+C:\Users\Mitch\Desktop\Coding\C#\SteveBot-Rebuild\obj\Release\net7.0\ref\SteveBot-Rebuild.dll
