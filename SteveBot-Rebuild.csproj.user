@@ -2,6 +2,6 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ActiveDebugProfile>Docker</ActiveDebugProfile>
-    <_LastSelectedProfileId>C:\Users\Mitch\Desktop\Coding\C#\SteveBot-Rebuild\Properties\PublishProfiles\ezclap.pubxml</_LastSelectedProfileId>
+    <_LastSelectedProfileId>C:\Users\Mitch\Desktop\Coding\C#\SteveBot-Rebuild\Properties\PublishProfiles\registry.hub.docker.com_titanic880.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
 </Project>

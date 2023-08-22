@@ -63,6 +63,7 @@ namespace SteveBot_Rebuild
             tim.Interval = 60000;
             tim.Start();
             await Task.Delay(Timeout.Infinite);
+            Console.WriteLine("");
         }
 
         private void Tim_Elapsed(object? sender, ElapsedEventArgs e)
@@ -82,7 +83,7 @@ namespace SteveBot_Rebuild
                     CommandFunctions.ErrorMessages(ex.Message);
                 }
             }
-            else Console.WriteLine(".");
+            else Console.Write(".");
         }
 
         /// <summary>
