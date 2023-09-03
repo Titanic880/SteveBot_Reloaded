@@ -1,7 +1,8 @@
-﻿using System;
+﻿using SB_Content.Call_of_Duty;
 using System.Linq;
+using System;
 
-namespace SteveBot_Rebuild.Content.Call_of_Duty.Randomizer
+namespace SB_Content.Call_of_Duty.Randomizer
 {
     public class ZombRandLib : WeaponNames
     {

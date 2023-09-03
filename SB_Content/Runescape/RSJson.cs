@@ -1,4 +1,6 @@
-﻿namespace SteveBot_Rebuild.Content.Runescape
+﻿using System;
+
+namespace SB_Content.Runescape
 {
     public enum RS3Rituals
     {
@@ -40,12 +42,12 @@
         GreaterCandle,
         SkullCandle
     }
-    internal class RSJson
+    public class RSJson
     {
         public int[] NecroplasmPrices = new int[3] { 0, 1, 2 }; //Basic ink not included as price is always 1 (Buying from shop)
         public int[] InkPrices = new int[3] { 0, 1, 2 };
-        private readonly int[] RitualDurations = { 30, 60, 84 }; //Amount of time stated in game for the ritual to take (Assumed to be seconds)
-        private readonly int[] RitualsPerHour = { 119, 59, 42 }; //Theoretical Max amount of rituals per hour (-1 for est inbetweens)
+        //private readonly int[] RitualDurations = { 30, 60, 84 }; //Amount of time stated in game for the ritual to take (Assumed to be seconds)
+        //private readonly int[] RitualsPerHour = { 119, 59, 42 }; //Theoretical Max amount of rituals per hour (-1 for est inbetweens)
         public DateTime LastUpdated = DateTime.UtcNow;
         public bool UpdatedCall = false;
         public int AshPrice = 69;
@@ -75,16 +77,6 @@
                 RS3Rituals.PowEnsoul => 6 + InkPrices[0] * 11 + InkPrices[1] * 4,
                 _ => -1,
             };
-        }
-        /// <summary>
-        /// Cost of a single Run
-        /// </summary>
-        /// <param name="ritual"></param>
-        /// <returns></returns>
-        public int RitualRun_Cost(RS3Rituals ritual)
-        {
-            int InitCost = RitualSetup_Cost(ritual);
-            return -1;
         }
         /// <summary>
         /// Cost of a single Alteration Glyph

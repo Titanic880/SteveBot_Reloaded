@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System;
 
-using static SteveBot_Rebuild.Content.Payday.Randomizer.Generic_Data;
+using static SB_Content.Payday.Randomizer.Generic_Data;
 
-namespace SteveBot_Rebuild.Content.Payday.Randomizer
+namespace SB_Content.Payday.Randomizer
 {
     public class PD2DataFile
     {

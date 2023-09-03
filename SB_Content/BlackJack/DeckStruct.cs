@@ -1,4 +1,7 @@
-﻿namespace SteveBot_Rebuild.Content.BlackJack
+﻿using System.Collections.Generic;
+using System;
+
+namespace SB_Content.BlackJack
 {
     class DeckStruct
     {

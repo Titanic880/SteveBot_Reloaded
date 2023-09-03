@@ -60,10 +60,10 @@ namespace SteveBot_Rebuild
 
             System.Timers.Timer tim = new();
             tim.Elapsed += Tim_Elapsed;
-            tim.Interval = 60000;
+            tim.Interval = 300000;
             tim.Start();
             await Task.Delay(Timeout.Infinite);
-            Console.WriteLine("");
+            Console.WriteLine("zzz");
         }
 
         private void Tim_Elapsed(object? sender, ElapsedEventArgs e)
@@ -83,7 +83,7 @@ namespace SteveBot_Rebuild
                     CommandFunctions.ErrorMessages(ex.Message);
                 }
             }
-            else Console.Write(".");
+            //else Console.Write(".");
         }
 
         /// <summary>
@@ -114,8 +114,8 @@ namespace SteveBot_Rebuild
             {
                 if (reaction.User.Value.IsBot) return;
                 IUserMessage? message = await msgCache.GetOrDownloadAsync();
-                var debug = message.Reactions;
-
+                //var debug = message.Reactions;
+                
                 //In switch items
                 Emoji[] emoj;
                 IEmote checkmarkemote;
@@ -135,7 +135,7 @@ namespace SteveBot_Rebuild
                             for (int i = 0; i < emoj.Length; i++)
                                 if (message.Reactions[emoj[i]].ReactionCount > 1)
                                     rand[i] = true;
-                            Content.Payday.Randomizer.PD2DataFile pd2data = new();
+                            SB_Content.Payday.Randomizer.PD2DataFile pd2data = new();
                             pd2data.Randomize(rand);
                             EmbedBuilder builder = new EmbedBuilder()
                             .WithTitle("Payday 2 Randomizer Results")
@@ -155,7 +155,7 @@ namespace SteveBot_Rebuild
                             for (int i = 0; i < emoj.Length; i++)
                                 if (message.Reactions[emoj[i]].ReactionCount > 1)
                                     rand[i] = true;
-                            Content.Call_of_Duty.Randomizer.ZombRandLib randlib = new();
+                            SB_Content.Call_of_Duty.Randomizer.ZombRandLib randlib = new();
                             randlib.ApplyOptions(rand);
                             randlib.Randomize();
 

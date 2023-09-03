@@ -1,5 +1,5 @@
-﻿using SteveBot_Rebuild.Content.Runescape;
-using SteveBot_Rebuild.Modules;
+﻿using SteveBot_Rebuild.Modules;
+using SB_Content.Runescape;
 
 namespace SteveBot_Rebuild
 {

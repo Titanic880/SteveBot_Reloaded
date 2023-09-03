@@ -1,4 +1,4 @@
-﻿namespace SteveBot_Rebuild.Content.Call_of_Duty
+﻿namespace SB_Content.Call_of_Duty
 {
     public abstract class WeaponNames
     {

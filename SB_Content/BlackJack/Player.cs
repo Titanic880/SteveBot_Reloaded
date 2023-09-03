@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SteveBot_Rebuild.Content.BlackJack
+namespace SB_Content.BlackJack
 {
     public class Player
     {

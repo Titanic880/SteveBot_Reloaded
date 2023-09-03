@@ -1,10 +1,10 @@
 ﻿using Discord.Commands;
 using Discord;
 
-using SteveBot_Rebuild.Content;
-using SteveBot_Rebuild.Content.BlackJack;
-using SteveBot_Rebuild.Content.Runescape;
-using SteveBot_Rebuild.Content.Payday.Randomizer;
+using SB_Content;
+using SB_Content.BlackJack;
+using SB_Content.Runescape;
+using SB_Content.Payday.Randomizer;
 
 namespace SteveBot_Rebuild.Modules
 {
@@ -725,7 +725,7 @@ namespace SteveBot_Rebuild.Modules
         [Command("cwzRandfast")]
         public async Task CODCWRandomizer()
         {
-            Content.Call_of_Duty.Randomizer.ZombRandLib randlib = new();
+            SB_Content.Call_of_Duty.Randomizer.ZombRandLib randlib = new();
 
             randlib.TrueRandomize();
 

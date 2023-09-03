@@ -1,6 +1,10 @@
-﻿namespace SteveBot_Rebuild.Content
+﻿using System.Collections.Generic;
+using System.Linq;
+using System;
+
+namespace SB_Content
 {
-    static class Calculator
+    public static class Calculator
     {
         private static readonly char[] ops = { '^', '*', '/', '-', '+' };
         /// <summary>
@@ -34,28 +38,16 @@
         }
         private static string Calcsimple(string value2, string value1, char op)
         {
-            string result = "";
-            switch (op)
+            return op switch
             {
-                case '+':
-                    result = (Convert.ToDouble(value1) + Convert.ToDouble(value2)).ToString();
-                    break;
-                case '-':
-                    result = (Convert.ToDouble(value1) - Convert.ToDouble(value2)).ToString();
-                    break;
-                case '*':
-                    result = (Convert.ToDouble(value1) * Convert.ToDouble(value2)).ToString();
-                    break;
-                case '/':
-                    result = (Convert.ToDouble(value2) / Convert.ToDouble(value1)).ToString();
-                    break;
-                case '^':
-                    result = Math.Pow(Convert.ToDouble(value2), Convert.ToDouble(value1)).ToString();
-                    break;
-            }
-            return result;
+                '+' => (Convert.ToDouble(value1) + Convert.ToDouble(value2)).ToString(),
+                '-' => (Convert.ToDouble(value2) - Convert.ToDouble(value1)).ToString(),
+                '*' => (Convert.ToDouble(value1) * Convert.ToDouble(value2)).ToString(),
+                '/' => (Convert.ToDouble(value2) / Convert.ToDouble(value1)).ToString(),
+                '^' => Math.Pow(Convert.ToDouble(value2), Convert.ToDouble(value1)).ToString(),
+                _ => "0",
+            };
         }
-
         private static List<string> Complex_Organize(string input)
         {
             List<string> tmp = new();

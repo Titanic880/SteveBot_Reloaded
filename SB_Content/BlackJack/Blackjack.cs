@@ -1,6 +1,4 @@
-﻿using Discord.Commands;
-
-namespace SteveBot_Rebuild.Content.BlackJack
+﻿namespace SB_Content.BlackJack
 {
     public class Card
     {
@@ -20,7 +18,7 @@ namespace SteveBot_Rebuild.Content.BlackJack
             Suit = suit;
         }
     }
-    public class Blackjack : ModuleBase<SocketCommandContext>
+    public class Blackjack
     {
         readonly Player dealer = new(true);
         readonly Player player = new();
