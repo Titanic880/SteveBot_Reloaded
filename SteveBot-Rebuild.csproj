@@ -12,8 +12,11 @@
 
   <ItemGroup>
     <Compile Remove="SB_Content\**" />
+    <Compile Remove="Stevebot-DB\**" />
     <EmbeddedResource Remove="SB_Content\**" />
+    <EmbeddedResource Remove="Stevebot-DB\**" />
     <None Remove="SB_Content\**" />
+    <None Remove="Stevebot-DB\**" />
   </ItemGroup>
 
   <ItemGroup>

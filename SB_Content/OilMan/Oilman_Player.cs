@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Discord;
 
 namespace SB_Content.OilMan
@@ -13,7 +14,8 @@ namespace SB_Content.OilMan
         public int Income { get; private set; }
         public readonly List<GameTile> OwnedTiles = new();
 
-        public Oilman_Player(IUser User,int gameID)
+        //public Tuple<Emoji, Emoji> PlayerColors;
+        public Oilman_Player(IUser User, int gameID)
         {
             this.User = User;
             Money = 100000;
@@ -27,19 +29,16 @@ namespace SB_Content.OilMan
             Money -= amount;
             return true;
         }
-        
         public void StartTurnUpdate()
-        =>Money += Income;
-        
-
+        {
+            Money += Income;
+        }
         public void EndTurnUpdate()
         {
             foreach (GameTile tile in OwnedTiles)
                 Income += tile.GetTileIncome();
         }
-
         public override string ToString()
             => User.Username;
-        
     }
 }

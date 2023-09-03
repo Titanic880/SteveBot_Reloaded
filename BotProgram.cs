@@ -122,15 +122,15 @@ namespace SteveBot_Rebuild
                 ReactionMetadata data;
                 bool[] rand;
 
-                switch (message.Embeds.FirstOrDefault()!.Title)
+                switch (message.Embeds.FirstOrDefault()!.Title.Split(':')[0])
                 {
                     case "Payday 2 Randomizer":
                         emoj = new Emoji[8];
                         Array.Copy(emojis, emoj, 8);
                         rand = new bool[8];
-                        checkmarkemote = message.Reactions.Keys.FirstOrDefault(x => x.Name == emojis[9].Name)!;
+                        checkmarkemote = message.Reactions.Keys.FirstOrDefault(x => x.Name == "✅")!;
                         data = message.Reactions[checkmarkemote];
-                        if (checkmarkemote.Name == emojis[9].Name && data.IsMe && data.ReactionCount > 1)
+                        if (checkmarkemote.Name == "✅" && data.IsMe && data.ReactionCount > 1)
                         {
                             for (int i = 0; i < emoj.Length; i++)
                                 if (message.Reactions[emoj[i]].ReactionCount > 1)
@@ -148,9 +148,9 @@ namespace SteveBot_Rebuild
                         emoj = new Emoji[9];
                         Array.Copy(emojis, emoj, 9);
                         rand = new bool[9];
-                        checkmarkemote = message.Reactions.Keys.FirstOrDefault(x => x.Name == emojis[9].Name)!;
+                        checkmarkemote = message.Reactions.Keys.FirstOrDefault(x => x.Name == "✅")!;
                         data = message.Reactions[checkmarkemote];
-                        if (checkmarkemote.Name == emojis[9].Name && data.IsMe && data.ReactionCount > 1)
+                        if (checkmarkemote.Name == "✅" && data.IsMe && data.ReactionCount > 1)
                         {
                             for (int i = 0; i < emoj.Length; i++)
                                 if (message.Reactions[emoj[i]].ReactionCount > 1)
@@ -164,6 +164,22 @@ namespace SteveBot_Rebuild
                             .WithTimestamp(DateTime.UtcNow)
                             .WithDescription(randlib.GetResult());
                             await reaction.Channel.SendMessageAsync($"<@{reaction.UserId}> ", embed: builder.Build());
+                        }
+                        break;
+                    case "Oilman Game":
+                        if (message.Embeds.FirstOrDefault()!.Footer.ToString() == "Start Info")
+                        {
+                            Emoji[] reac = new Emoji[] { ":one:", ":two:", ":three:" };
+                            int throwup = 0;
+                            if (message.Reactions[reac[0]].ReactionCount != 1)
+                                throwup = 1;
+                            else if (message.Reactions[reac[1]].ReactionCount != 1)
+                                throwup = 2;
+                            else if (message.Reactions[reac[2]].ReactionCount != 1)
+                                throwup = 3;
+                            if (await SB_Content.OilMan.GameHandler.ReactionLayoutSelected(throwup, Convert.ToInt32(message.Embeds.FirstOrDefault()!.Title.Split(':')[1])))
+                                await message.AddReactionAsync(new Emoji("✅"));
+                            else await message.AddReactionAsync(new Emoji(":x:"));
                         }
                         break;
                     default:
@@ -196,7 +212,7 @@ namespace SteveBot_Rebuild
                         return;
                     //generates an object from the user message
                     SocketCommandContext context = new(_client, message);
-
+                    
                     //Attempts to run the command and outputs accordingly
                     IResult result = await _commands.ExecuteAsync(context, argPos, _services);
                     if (!result.IsSuccess)

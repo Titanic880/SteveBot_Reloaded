@@ -8,7 +8,7 @@ using SB_Content.Payday.Randomizer;
 
 namespace SteveBot_Rebuild.Modules
 {
-    public class MainCommands : ModuleBase<SocketCommandContext>
+    public partial class MainCommands : ModuleBase<SocketCommandContext>
     {
         public bool LongTask = false;
         private int timerSeconds = 0;
@@ -667,7 +667,6 @@ namespace SteveBot_Rebuild.Modules
             await ReplyAsync($"The total cost of {amount} of {input} is: {cost}");
         }
         #endregion Runescape
-
         #region Payday
         [Command("pd2Help")]
         public async Task PD2Help()
@@ -685,7 +684,8 @@ namespace SteveBot_Rebuild.Modules
         {
             input = input.ToLower();
             PD2DataFile pd2data = new();
-            switch (input) {
+            switch (input)
+            {
                 case "all":
                     pd2data.RandomizeAll();
                     break;
@@ -699,8 +699,7 @@ namespace SteveBot_Rebuild.Modules
             Embed embed = EmbedBuilder.Build();
             await ReplyAsync(embed: embed);
         }
-        #endregion Payday
-        
+       
         [Command("PD2RandReact")]
         public async Task PD2Rand()
         {
@@ -721,6 +720,7 @@ namespace SteveBot_Rebuild.Modules
             var item = await ReplyAsync(embed: embed);
             await item.AddReactionsAsync(BotProgram.emojis.Where(x=>x != BotProgram.emojis[8]).ToArray());
         }
+        #endregion Payday
         #region Call of Duty
         [Command("cwzRandfast")]
         public async Task CODCWRandomizer()
@@ -759,5 +759,51 @@ namespace SteveBot_Rebuild.Modules
             await item.AddReactionsAsync(BotProgram.emojis);
         }
         #endregion Call of Duty
+        #region Oilman
+        [Command("Oilman start")]
+        public async Task StartOilman(IGuildUser user)
+        {
+            Tuple<bool, string> result = await SB_Content.OilMan.GameHandler.InitilizeNewGame(user);
+            await ReplyAsync(result.Item2);
+            if (result.Item1)
+            {
+                var item = await ReplyAsync(embed: 
+                    new EmbedBuilder()
+                    .WithTitle("Oilman Game:1")
+                    .WithDescription("To Choose which layout use the provided reactions"
+                    +"\n`Layout 1: Original Games layout`"
+                    +"\n`Layout 2: Original Game Alberta layout`"
+                    +"\n`Layout 3: 100% random Generated tiles (not balanced)`"
+                    +"\nTo add users to the game, use !Add @User"
+                    +"\nTo remove users, use !remove @User"
+                    +"\nTo Start the game, use !oilman go"
+                    +"\n(please wait for Confirm check(or x) after reacting to this command)")
+                    .WithFooter("Start Info")
+                    .Build());
+                await item.AddReactionsAsync(new Emoji[] { ":one:", ":two:", ":three:" });
+            }
+        }
+        [Command("Oilman cancel")]
+        public async Task OilmanCancel(IGuildUser user)
+        {
+            string result = SB_Content.OilMan.GameHandler.CancelGame(user);
+            await ReplyAsync(result);
+        }
+        [Command("Oilman go")]
+        public async Task RunOilmanGame(IGuildUser user)
+        {
+            Embed result = await SB_Content.OilMan.GameHandler.StartGame(user);
+            await ReplyAsync(embed: result);
+        }
+        [Command("oilman layout")]
+        public async Task OilmanLayoutSelect()
+        {
+
+        }
+        [Command("Oilman Legend")]
+        public async Task OilmanLegend()
+            => await ReplyAsync(embed: SB_Content.OilMan.GameHandler.BuildLegend());
+        
+        #endregion Oilman
     }
 }

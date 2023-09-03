@@ -26,7 +26,7 @@ namespace SB_Content.OilMan
         public GameTile(int tileID, bool State = false)
         {
             LandState = State;
-            WellDepth = new Random().Next(0, 4);    //To be replaced with heat map Random
+            WellDepth = new Random().Next(1, 4);    //To be replaced with heat map Random
             TileID = tileID;
         }
         public bool SetOwner(Oilman_Player user)
@@ -46,7 +46,6 @@ namespace SB_Content.OilMan
             if (!VisibleDepth) return 0;
             return (LandState ? (int)(baseincome * WtrMultiplier) : baseincome) * WellDepth;
         }
-
         public Tuple<bool,string> Drill(Drilling_Types _Drill)
         {
             if (Owner == null) return Tuple.Create(false, "Attempted to dig at unassigned Tile...");
@@ -99,6 +98,22 @@ namespace SB_Content.OilMan
                 output = "While digging you have yet to find oil";
 
             return Tuple.Create(true, output);
+        }
+
+        public override string ToString()
+        {
+            //Returns Blank Tile
+            if (!VisibleDepth) return LandState ? GameHandler.GameAssets[2].Name : GameHandler.GameAssets[3].Name;
+            //Shallow Well
+            if (WellDepth == 1) return GameHandler.GameAssets[4].Name;
+            //Medium Well
+            if (WellDepth == 2) return GameHandler.GameAssets[5].Name;
+            //Deepest Well
+            if (WellDepth == 3) return GameHandler.GameAssets[6].Name;
+            //Empty Well
+            if (WellDepth == 4) return GameHandler.GameAssets[0].Name;
+
+            return GameHandler.GameAssets[1].Name;
         }
     }
 }
