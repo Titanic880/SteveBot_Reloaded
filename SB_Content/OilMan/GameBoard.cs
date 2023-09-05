@@ -39,27 +39,23 @@ namespace SB_Content.OilMan
         {
             return await Task.Run(() =>
             {
-                
                 if(Type == 1) { }
                 else if(Type == 2) { }
                 try
                 {
-
                     GameMap = new GameTile[GameHeight][];
                     //RANDOM GENERATION
                     int tileID = 0;
-                    Random rand = new();
                     for (int y = 0; y < GameHeight; y++)
                     {
                         GameMap[y] = new GameTile[GameWidth];
                         for (int x = 0; x < GameWidth; x++)
-                            GameMap[y][x] = new GameTile(tileID++, Convert.ToBoolean(rand.Next(0, 1)));
+                            GameMap[y][x] = new GameTile(tileID++);
                     }
                     return true;
                 }
                 catch (Exception ex)
                 {
-                    
                     return false;
                 }
             });

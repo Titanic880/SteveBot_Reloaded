@@ -760,8 +760,8 @@ namespace SteveBot_Rebuild.Modules
         }
         #endregion Call of Duty
         #region Oilman
-        [Command("Oilman start")]
-        public async Task StartOilman(IGuildUser user)
+        [Command("Oilman init")]
+        public async Task initOilman(IGuildUser user)
         {
             Tuple<bool, string> result = await SB_Content.OilMan.GameHandler.InitilizeNewGame(user);
             await ReplyAsync(result.Item2);
@@ -784,19 +784,20 @@ namespace SteveBot_Rebuild.Modules
             }
         }
         [Command("Oilman cancel")]
-        public async Task OilmanCancel(IGuildUser user)
+        public async Task OilmanCancel()
         {
-            string result = SB_Content.OilMan.GameHandler.CancelGame(user);
+            string result = SB_Content.OilMan.GameHandler.CancelGame();
             await ReplyAsync(result);
         }
-        [Command("Oilman go")]
-        public async Task RunOilmanGame(IGuildUser user)
+        [Command("Oilman start")]
+        public async Task StartOilmanGame()
         {
-            Embed result = await SB_Content.OilMan.GameHandler.StartGame(user);
+            Embed result = await SB_Content.OilMan.GameHandler.StartGame();
             await ReplyAsync(embed: result);
+            await SB_Content.OilMan.GameHandler.StartTurn();
         }
-        [Command("oilman layout")]
-        public async Task OilmanLayoutSelect()
+        [Command("oilman tbd")]
+        public async Task tbd()
         {
 
         }

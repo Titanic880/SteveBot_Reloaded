@@ -4,6 +4,7 @@ namespace SB_Content.OilMan
 {
     internal class GameTile
     {
+        private static Random rand = new Random();
         //Income Calculation items
         private const int baseincome = 2000;
         private const double WtrMultiplier = 2.5;
@@ -23,10 +24,16 @@ namespace SB_Content.OilMan
         /// </summary>
         public bool VisibleDepth { get => DrillDepth >= WellDepth; }
 
-        public GameTile(int tileID, bool State = false)
+        public GameTile(int tileID, bool State)
         {
             LandState = State;
-            WellDepth = new Random().Next(1, 4);    //To be replaced with heat map Random
+            WellDepth = rand.Next(1, 4);    //To be replaced with heat map Random
+            TileID = tileID;
+        }
+        public GameTile(int tileID)
+        {
+            LandState = Convert.ToBoolean(rand.Next(0,100)%2);
+            WellDepth = rand.Next(1, 4);    //To be replaced with heat map Random
             TileID = tileID;
         }
         public bool SetOwner(Oilman_Player user)
