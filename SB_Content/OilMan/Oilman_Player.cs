@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System;
+
 using Discord;
 
 namespace SB_Content.OilMan
@@ -11,7 +12,14 @@ namespace SB_Content.OilMan
         public int Money { get; private set; }
         private int OwedMoney = 0;
         public int Wealth { get => Money - OwedMoney; }
-        public int Income { get; private set; }
+        public int Income { get
+            {
+                int ttl = 0;
+                foreach (GameTile tile in OwnedTiles)
+                    ttl += tile.GetTileIncome();
+                return ttl;
+            }
+            }
         public readonly List<GameTile> OwnedTiles = new();
         public Tuple<Emoji, Emoji>? Player_Color { get; private set; }
 
@@ -20,8 +28,16 @@ namespace SB_Content.OilMan
         {
             this.User = User;
             Money = 100000;
-            Income = 0;
             GameID = gameID;
+        }
+        internal Oilman_Player(string ov)
+        {
+            if (ov != "OVERRIDE_STATE")
+                throw new AccessViolationException();
+            User = null;
+            Money = 0;
+            GameID = -1;
+            Player_Color = Tuple.Create(GameHandler.GameAssets[7], GameHandler.GameAssets[8]);
         }
         public void SetColors(Tuple<Emoji, Emoji> Colors)
         {
@@ -40,8 +56,7 @@ namespace SB_Content.OilMan
         }
         public void EndTurnUpdate()
         {
-            foreach (GameTile tile in OwnedTiles)
-                Income += tile.GetTileIncome();
+            
         }
         public override string ToString()
             => User.Username;

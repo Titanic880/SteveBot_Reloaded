@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System;
+using Discord;
 
 namespace SB_Content.OilMan
 {
@@ -33,6 +34,7 @@ namespace SB_Content.OilMan
     {
         private const int GameWidth = 15;
         private const int GameHeight = 12;
+        private readonly Oilman_Player BuySave = new("OVERRIDE_STATE");
         public GameTile[][] GameMap { get; private set; } = Array.Empty<GameTile[]>();
         //             y:x
         internal async Task<bool> GenerateMap(int Type)
@@ -60,7 +62,11 @@ namespace SB_Content.OilMan
                 }
             });
         }
-
+        internal void SetBuyState(Tuple<int,int>[] tiles)
+        {
+            //Places a temp user on the tiles
+            ClaimLand(BuySave,tiles);
+        }
         internal Tuple<bool, string> ClaimLand(Oilman_Player _player, Tuple<int, int>[] Tiles)
         {
             Tuple<bool, string> retitem = Tuple.Create(true, $"Land has been claimed by {_player}");

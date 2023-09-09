@@ -38,10 +38,14 @@ namespace SB_Content.OilMan
         }
         public bool SetOwner(Oilman_Player user)
         {
-            if (Owner != null) return false;
-            DrillDepth = 0;
-            Owner = user;
-            return true;
+            //Check for no owner or owned by buyer placeholder
+            if (Owner == null || (Owner.GameID == -1 && Owner.User == null))
+            {
+                DrillDepth = 0;
+                Owner = user;
+                return true;
+            }
+            return false;
         }
         public int GetWellDepth()
         {

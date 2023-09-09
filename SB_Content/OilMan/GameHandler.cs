@@ -124,7 +124,7 @@ namespace SB_Content.OilMan
             throw new NotImplementedException();
         }
         //Return TBD
-        public static async Task<object> BuyLand(IUser user,string positional)
+        public static async Task<string> BuyLand(IUser user,string positional)
         {
             return await Task.Run(() =>
             {
@@ -135,6 +135,7 @@ namespace SB_Content.OilMan
                 foreach (GameState gs in Games)
                     if (gs.PlayerCheck(user))
                     {
+                        if (gs.CurrentPlayer.User != user) return $"{user.Mention} It is not your turn!";
                         game = gs;
                         break;
                     }
@@ -160,8 +161,7 @@ namespace SB_Content.OilMan
                         //Search across then down
                         for(int y = Startpos.Item2; y < Endpos.Item2; y++) 
                             for(int x = Startpos.Item1; x < Endpos.Item1; x++)
-                                tilesToBuy.Add(Tuple.Create(x,y));
-                            
+                                tilesToBuy.Add(Tuple.Create(x,y));  
                     }
                     else //comma seperated object
                     {
@@ -185,7 +185,7 @@ namespace SB_Content.OilMan
                 game.SetBuyTiles(tilesToBuy.ToArray());
 
 
-                return 0;
+                return "";
             });
             //Converts a-o<number> into positional data
             static Tuple<int,int> quardGen(string quard)

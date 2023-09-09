@@ -2,10 +2,10 @@
 using Discord;
 
 using SB_Content;
+using SB_Content.OilMan;
 using SB_Content.BlackJack;
 using SB_Content.Runescape;
 using SB_Content.Payday.Randomizer;
-using System.Runtime.CompilerServices;
 
 namespace SteveBot_Rebuild.Modules
 {
@@ -794,14 +794,14 @@ namespace SteveBot_Rebuild.Modules
         [Command("Oilman start")]
         public async Task StartOilmanGame()
         {
-            Embed result = await SB_Content.OilMan.GameHandler.StartGame(Context.Message.Author);
+            Embed result = await GameHandler.StartGame(Context.Message.Author);
             await ReplyAsync(embed: result);
-            await SB_Content.OilMan.GameHandler.StartTurn();
+            await GameHandler.StartTurn();
         }
         [Command("Oilman Legend")]
         public async Task OilmanLegend()
         {
-            _ = await ReplyAsync(embed: SB_Content.OilMan.GameHandler.BuildTileLegend());
+            _ = await ReplyAsync(embed: GameHandler.BuildTileLegend());
             _ = await ReplyAsync(embed: new EmbedBuilder()
                 .WithTitle("Oilman Game")
                 .WithDescription(
@@ -817,7 +817,8 @@ namespace SteveBot_Rebuild.Modules
         [Command("om Buy")]
         public async Task OilmanBuy(string Positionals)
         {
-
+            string result = await GameHandler.BuyLand(Context.Message.Author, Positionals);
+            await ReplyAsync(result);
         }
         [Command("om bid")]
         public async Task OilmanBid(int amount)
@@ -832,8 +833,8 @@ namespace SteveBot_Rebuild.Modules
         [Command("Oilman Colors")]
         public async Task OilmanColors()
         {
-            var res = await ReplyAsync(embed: SB_Content.OilMan.GameHandler.BuildColorSelector(Context.Message.Author));
-            await res.AddReactionsAsync(SB_Content.OilMan.GameHandler.GetColorReaction());
+            var res = await ReplyAsync(embed: GameHandler.BuildColorSelector(Context.Message.Author));
+            await res.AddReactionsAsync(GameHandler.GetColorReaction());
         }
         #endregion Oilman
     }

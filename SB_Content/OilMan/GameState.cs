@@ -28,7 +28,6 @@ namespace SB_Content.OilMan
         private int CP = -1;
 
         private Tuple<int, int>[] tilebuy = Array.Empty<Tuple<int, int>>();
-        internal bool TilesToBuy { get => tilebuy is not Array.Empty(); }
 
 
         public GameState(IUser Host,int GameID)
