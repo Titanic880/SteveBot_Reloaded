@@ -13,6 +13,7 @@ namespace SB_Content.OilMan
         public int Wealth { get => Money - OwedMoney; }
         public int Income { get; private set; }
         public readonly List<GameTile> OwnedTiles = new();
+        public Tuple<Emoji, Emoji>? Player_Color { get; private set; }
 
         //public Tuple<Emoji, Emoji> PlayerColors;
         public Oilman_Player(IUser User, int gameID)
@@ -21,6 +22,10 @@ namespace SB_Content.OilMan
             Money = 100000;
             Income = 0;
             GameID = gameID;
+        }
+        public void SetColors(Tuple<Emoji, Emoji> Colors)
+        {
+            Player_Color = Colors;
         }
 
         public bool Pay(int amount)

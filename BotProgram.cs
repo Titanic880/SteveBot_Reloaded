@@ -83,7 +83,6 @@ namespace SteveBot_Rebuild
                     CommandFunctions.ErrorMessages(ex.Message);
                 }
             }
-            //else Console.Write(".");
         }
 
         /// <summary>
@@ -99,15 +98,66 @@ namespace SteveBot_Rebuild
             Console.WriteLine(arg);
             return Task.CompletedTask;
         }
-        //Adds commands to the bot
-        public async Task RegisterCommandsAsync()
+        /// <summary>
+        /// Adds commands to the bot
+        /// </summary>
+        /// <returns></returns>
+        private async Task RegisterCommandsAsync()
         {
             //registers anything tagged as 'Task' to the set of commands that can be called
             _client.MessageReceived += HandleCommandAsync;
             _client.ReactionAdded += HandleReactionAdd;
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
         }
+        /// <summary>
+        /// Primary Command Handler
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        private Task HandleCommandAsync(SocketMessage arg)
+        {
+            _ = Task.Run(async () =>
+            {
+                int argPos = 0;
+                //IGuildChannel bots;   //TODO: Implement channel restriction
 
+                //Stores user message and initilizes message position
+                if (arg is not SocketUserMessage message)
+                    return;
+                //checks to see if the user is a bot
+                else
+                    //Checks for prefix or specified passthrough commands
+                    if (message.HasCharPrefix(PrefixChar, ref argPos)
+                     || message.Content.ToLower() == "k")
+                {
+                    //Saves user Input to a debug file for later inspection
+                    CommandFunctions.UserCommand(message);
+                    if (message.Author.IsBot)
+                        return;
+                    //generates an object from the user message
+                    SocketCommandContext context = new(_client, message);
+
+                    //Attempts to run the command and outputs accordingly
+                    IResult result = await _commands.ExecuteAsync(context, argPos, _services);
+                    if (!result.IsSuccess)
+                    {
+                        Console.WriteLine(result.ErrorReason);
+                        await message.Channel.SendMessageAsync(result.ErrorReason);
+                    }
+                    if (result.Error.Equals(CommandError.UnmetPrecondition))
+                        await message.Channel.SendMessageAsync(result.ErrorReason);
+                }
+            });
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Reaction Handler
+        /// </summary>
+        /// <param name="msgCache"></param>
+        /// <param name="msgChannel"></param>
+        /// <param name="reaction"></param>
+        /// <returns></returns>
         private Task HandleReactionAdd(Cacheable<IUserMessage, ulong> msgCache, Cacheable<IMessageChannel, ulong> msgChannel, SocketReaction reaction)
         {
             _ = Task.Run(async () =>
@@ -181,47 +231,13 @@ namespace SteveBot_Rebuild
                                 await message.AddReactionAsync(new Emoji("✅"));
                             else await message.AddReactionAsync(new Emoji(":x:"));
                         }
+                        else if(message.Embeds.First()!.Footer.ToString() == "Color Selector")
+                        {
+                        
+                        }
                         break;
                     default:
                         break;
-                }
-            });
-            return Task.CompletedTask;
-        }
-
-        //Command Handler
-        private Task HandleCommandAsync(SocketMessage arg)
-        {
-            _ = Task.Run(async () =>
-            {
-                int argPos = 0;
-                //IGuildChannel bots;   //TODO: Implement channel restriction
-
-                //Stores user message and initilizes message position
-                if (arg is not SocketUserMessage message)
-                    return;
-                //checks to see if the user is a bot
-                else
-                    //Checks for prefix or specified passthrough commands
-                    if (message.HasCharPrefix(PrefixChar, ref argPos)
-                     || message.Content.ToLower() == "k")
-                {
-                    //Saves user Input to a debug file for later inspection
-                    CommandFunctions.UserCommand(message);
-                    if (message.Author.IsBot)
-                        return;
-                    //generates an object from the user message
-                    SocketCommandContext context = new(_client, message);
-                    
-                    //Attempts to run the command and outputs accordingly
-                    IResult result = await _commands.ExecuteAsync(context, argPos, _services);
-                    if (!result.IsSuccess)
-                    {
-                        Console.WriteLine(result.ErrorReason);
-                        await message.Channel.SendMessageAsync(result.ErrorReason);
-                    }
-                    if (result.Error.Equals(CommandError.UnmetPrecondition))
-                        await message.Channel.SendMessageAsync(result.ErrorReason);
                 }
             });
             return Task.CompletedTask;

@@ -109,8 +109,14 @@ namespace SB_Content.OilMan
 
         public override string ToString()
         {
-            //Returns Blank Tile
-            if (!VisibleDepth) return LandState ? GameHandler.GameAssets[2].Name : GameHandler.GameAssets[3].Name;
+            //Returns Blank Tile (owner color if owned)
+            if (!VisibleDepth)
+            {
+                if (Owner == null || Owner.Player_Color == null)
+                    return LandState ? GameHandler.GameAssets[2].Name : GameHandler.GameAssets[3].Name;
+                return LandState ? Owner.Player_Color.Item1.Name : Owner.Player_Color.Item2.Name;
+            }
+
             //Shallow Well
             if (WellDepth == 1) return GameHandler.GameAssets[4].Name;
             //Medium Well

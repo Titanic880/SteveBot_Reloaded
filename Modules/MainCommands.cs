@@ -5,6 +5,7 @@ using SB_Content;
 using SB_Content.BlackJack;
 using SB_Content.Runescape;
 using SB_Content.Payday.Randomizer;
+using System.Runtime.CompilerServices;
 
 namespace SteveBot_Rebuild.Modules
 {
@@ -169,6 +170,7 @@ namespace SteveBot_Rebuild.Modules
         [RequireUserPermission(GuildPermission.Administrator, ErrorMessage = "YOU DONT GOT ENOUGH COFFEE FOR THIS!")]
         public async Task BanMember(IGuildUser? user = null, [Remainder] string reason = "Default Reason")
         {
+
             if (user == null)
             {
                 await ReplyAsync("Please specify a user!");
@@ -761,23 +763,23 @@ namespace SteveBot_Rebuild.Modules
         #endregion Call of Duty
         #region Oilman
         [Command("Oilman init")]
-        public async Task initOilman(IGuildUser user)
+        public async Task initOilman()
         {
-            Tuple<bool, string> result = await SB_Content.OilMan.GameHandler.InitilizeNewGame(user);
+            Tuple<bool, string> result = await SB_Content.OilMan.GameHandler.InitilizeNewGame(Context.Message.Author);
             await ReplyAsync(result.Item2);
             if (result.Item1)
             {
-                var item = await ReplyAsync(embed: 
+                var item = await ReplyAsync(embed:
                     new EmbedBuilder()
                     .WithTitle("Oilman Game:1")
                     .WithDescription("To Choose which layout use the provided reactions"
-                    +"\n`Layout 1: Original Games layout`"
-                    +"\n`Layout 2: Original Game Alberta layout`"
-                    +"\n`Layout 3: 100% random Generated tiles (not balanced)`"
-                    +"\nTo add users to the game, use !Add @User"
-                    +"\nTo remove users, use !remove @User"
-                    +"\nTo Start the game, use !oilman go"
-                    +"\n(please wait for Confirm check(or x) after reacting to this command)")
+                    + "\n`Layout 1: Original Games layout`"
+                    + "\n`Layout 2: Original Game Alberta layout`"
+                    + "\n`Layout 3: 100% random Generated tiles (not balanced)`"
+                    + "\nTo add users to the game, use !Add @User"
+                    + "\nTo remove users, use !remove @User"
+                    + "\nTo Start the game, use !oilman go"
+                    + "\n(please wait for Confirm check(or x) after reacting to this command)")
                     .WithFooter("Start Info")
                     .Build());
                 await item.AddReactionsAsync(new Emoji[] { ":one:", ":two:", ":three:" });
@@ -786,25 +788,25 @@ namespace SteveBot_Rebuild.Modules
         [Command("Oilman cancel")]
         public async Task OilmanCancel()
         {
-            string result = SB_Content.OilMan.GameHandler.CancelGame();
+            string result = SB_Content.OilMan.GameHandler.CancelGame(Context.Message.Author);
             await ReplyAsync(result);
         }
         [Command("Oilman start")]
         public async Task StartOilmanGame()
         {
-            Embed result = await SB_Content.OilMan.GameHandler.StartGame();
+            Embed result = await SB_Content.OilMan.GameHandler.StartGame(Context.Message.Author);
             await ReplyAsync(embed: result);
             await SB_Content.OilMan.GameHandler.StartTurn();
-        }
-        [Command("oilman tbd")]
-        public async Task tbd()
-        {
-
         }
         [Command("Oilman Legend")]
         public async Task OilmanLegend()
             => await ReplyAsync(embed: SB_Content.OilMan.GameHandler.BuildLegend());
-        
+        [Command("Oilman Colors")]
+        public async Task OilmanColors()
+        {
+            var res = await ReplyAsync(embed: SB_Content.OilMan.GameHandler.BuildColorSelector(Context.Message.Author));
+            await res.AddReactionsAsync(SB_Content.OilMan.GameHandler.GetColorReaction());
+        }
         #endregion Oilman
     }
 }

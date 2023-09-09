@@ -20,14 +20,14 @@ namespace SB_Content.OilMan
         public bool GameActive { get; private set; } = false;
         private readonly GameBoard Board;
         #endregion Runtime Information
-        internal IGuildUser GameHost;
+        internal IUser GameHost;
 
         internal List<Oilman_Player> Players { get; set; } = new();
         internal Oilman_Player CurrentPlayer { get => Players[CP]; }
         internal int CurrentTurn { get; private set; }
         private int CP;
 
-        public GameState(IGuildUser Host,int GameID)
+        public GameState(IUser Host,int GameID)
         {
             this.GameID = GameID;
             GameHost = Host;
@@ -35,7 +35,7 @@ namespace SB_Content.OilMan
         }
         internal bool StartGame()
         {
-            //if(Players.Count < MinimumPlayers) return false;
+            if(Players.Count < MinimumPlayers) return false;
             GameActive = true;
             CurrentTurn = 0;
             CP = 0;
