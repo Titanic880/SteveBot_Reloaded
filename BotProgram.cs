@@ -164,8 +164,6 @@ namespace SteveBot_Rebuild
             {
                 if (reaction.User.Value.IsBot) return;
                 IUserMessage? message = await msgCache.GetOrDownloadAsync();
-                //var debug = message.Reactions;
-                
                 //In switch items
                 Emoji[] emoj;
                 IEmote checkmarkemote;

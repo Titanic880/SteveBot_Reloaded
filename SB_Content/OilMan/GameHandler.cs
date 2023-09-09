@@ -123,6 +123,96 @@ namespace SB_Content.OilMan
             //Find 
             throw new NotImplementedException();
         }
+        //Return TBD
+        public static async Task<object> BuyLand(IUser user,string positional)
+        {
+            return await Task.Run(() =>
+            {
+                //make non case sensitive inputs
+                positional = positional.ToLower();
+                //Get gamestate
+                GameState? game = null;
+                foreach (GameState gs in Games)
+                    if (gs.PlayerCheck(user))
+                    {
+                        game = gs;
+                        break;
+                    }
+
+                //Return item TBD
+                if (game == null) throw new NotImplementedException();
+
+                List<Tuple<int, int>> tilesToBuy = new();
+
+                //Get all items in a csv format
+                string[] objsolve = positional.Split(',');
+                for (int i = 0; i < objsolve.Length; i++)
+                {
+                    if (objsolve[i].Contains(':'))
+                    {
+                        string[] objso = objsolve[i].Split(':');
+                        //return item TBD
+                        if (objso.Length != 2) throw new NotImplementedException();
+                        //Get Start/end positions
+                        Tuple<int, int> Startpos = quardGen(objso[0]);
+                        Tuple<int, int> Endpos = quardGen(objso[1]);
+                        //Find all positions between the two
+                        //Search across then down
+                        for(int y = Startpos.Item2; y < Endpos.Item2; y++) 
+                            for(int x = Startpos.Item1; x < Endpos.Item1; x++)
+                                tilesToBuy.Add(Tuple.Create(x,y));
+                            
+                    }
+                    else //comma seperated object
+                    {
+                        Tuple<int, int> val = quardGen(objsolve[i]);
+                        if (val.Item1 != -1)
+                            tilesToBuy.Add(val);
+                        //Return item TBD
+                        else throw new NotImplementedException();
+                    }
+                }
+                //check size of tilestoBuy (cannot exceed set limit)
+                if(tilesToBuy.Count > GameState.MaxTileBuy)
+                {
+                    //return error
+                }
+                foreach(Tuple<int,int> tile in tilesToBuy)
+                    if (game.CheckOwned(tile))
+                    {
+                        //return error
+                    }
+                game.SetBuyTiles(tilesToBuy.ToArray());
+
+
+                return 0;
+            });
+            //Converts a-o<number> into positional data
+            static Tuple<int,int> quardGen(string quard)
+            {
+                if (!int.TryParse(quard.Skip(1).ToString(), out int y))
+                    return Tuple.Create(-1,-1);
+                return Tuple.Create(quard[0] switch
+                {
+                    'a' => 0,
+                    'b' => 1,
+                    'c' => 2,
+                    'd' => 3,
+                    'e' => 4,
+                    'f' => 5,
+                    'g' => 6,
+                    'h' => 7,
+                    'i' => 8,
+                    'j' => 9,
+                    'k' => 10,
+                    'l' => 11,
+                    'm' => 12,
+                    'n' => 13,
+                    'o' => 14,
+                    _ => -1,
+                }, y);
+            }
+        }
         #endregion Turn Based Actions
         #endregion Game Command input
         #region Game Reaction input
@@ -211,7 +301,7 @@ namespace SB_Content.OilMan
         /// </summary>
         /// <returns></returns>
         /// <exception cref="System.NotImplementedException"></exception>
-        public static Embed BuildLegend()
+        public static Embed BuildTileLegend()
         {
             //Build Map
             EmbedBuilder builder = new EmbedBuilder()
@@ -228,6 +318,7 @@ namespace SB_Content.OilMan
             Embed emb = builder.Build();
             return emb;
         }
+
         /// <summary>
         /// Returns a Color pallete Embed of current colors
         /// </summary>

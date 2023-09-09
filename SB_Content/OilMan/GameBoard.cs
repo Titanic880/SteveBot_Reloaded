@@ -61,7 +61,7 @@ namespace SB_Content.OilMan
             });
         }
 
-        internal Tuple<bool, string> BuyLand(Tuple<int, int>[] Tiles, Oilman_Player _player)
+        internal Tuple<bool, string> ClaimLand(Oilman_Player _player, Tuple<int, int>[] Tiles)
         {
             Tuple<bool, string> retitem = Tuple.Create(true, $"Land has been claimed by {_player}");
 
@@ -76,7 +76,7 @@ namespace SB_Content.OilMan
             }
             return retitem;
         }
-        internal Tuple<bool, string> DrillTile(Tuple<int, int> Tile, Drilling_Types _Drill)
+        internal Tuple<bool, string> DrillTile(Drilling_Types _Drill, Tuple<int, int> Tile)
             => GameMap[Tile.Item1][Tile.Item2].Drill(_Drill);
         
     }

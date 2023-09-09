@@ -449,7 +449,7 @@ namespace SteveBot_Rebuild.Modules
             "\nrssetprice : used to set price of an item" +
             "\nrsGetPrices : used to get all prices" +
             "\nRSritual : Get the price of a given ritual (no spaces in ritual)" +
-            "\nrsAlteration : GlyphX(X being tier) <amount>" + 
+            "\nrsAlteration : GlyphX(X being tier) <amount>" +
             ""
             )
         .WithCurrentTimestamp();
@@ -506,13 +506,13 @@ namespace SteveBot_Rebuild.Modules
             EmbedBuilder EmbedBuilder = new EmbedBuilder()
                 .WithTitle($"Current Bot Prices:")
                 .WithDescription($"AshPrice: {rsf.AshPrice}" +
-                                 "\nEctoplasm: " + rsf.Ectoplasm + 
+                                 "\nEctoplasm: " + rsf.Ectoplasm +
                                  "\nLesser Necroplasm: " + rsf.NecroplasmPrices[0] +
                                  "\nGreater Necroplasm: " + rsf.NecroplasmPrices[1] +
                                  "\nPowerful Necroplasm: " + rsf.NecroplasmPrices[2] +
                                  "\nRegular Ink: " + rsf.InkPrices[0] +
                                  "\nGreater Ink: " + rsf.InkPrices[1] +
-                                 "\nPowerful Ink: " + rsf.InkPrices[2] 
+                                 "\nPowerful Ink: " + rsf.InkPrices[2]
 ).WithCurrentTimestamp();
             Embed embed = EmbedBuilder.Build();
             await ReplyAsync(embed: embed);
@@ -547,7 +547,7 @@ namespace SteveBot_Rebuild.Modules
                 "\nlcomm  : Lesser Communion" +
                 "\nlens   : Lesser Ensoul" +
                 "\ngplasm : Greater Necroplasm" +
-                "\ngess   : Greater Essence" + 
+                "\ngess   : Greater Essence" +
                 "\ngcomm  : Greater Communion" +
                 "\nens    : Ensoul" +
                 "\npplasm : Powerful Necroplasm" +
@@ -565,40 +565,40 @@ namespace SteveBot_Rebuild.Modules
             string msg = "Setup Cost: ";
             switch (input)
             {
-               case "lplasm":
+                case "lplasm":
                     msg += rsf.RitualSetup_Cost(RS3Rituals.LesNecro);
-                   break;
-               case "less":
+                    break;
+                case "less":
                     msg += rsf.RitualSetup_Cost(RS3Rituals.LesEss);
                     break;
-               case "lcomm":
+                case "lcomm":
                     msg += rsf.RitualSetup_Cost(RS3Rituals.LesCommun);
                     break;
-               case "lens":
+                case "lens":
                     msg += rsf.RitualSetup_Cost(RS3Rituals.LesEnsoul);
                     break;
-               case "gplasm":
+                case "gplasm":
                     msg += rsf.RitualSetup_Cost(RS3Rituals.GreNecro);
                     break;
-               case "gess":
+                case "gess":
                     msg += rsf.RitualSetup_Cost(RS3Rituals.GreEss);
                     break;
-               case "gcomm":
+                case "gcomm":
                     msg += rsf.RitualSetup_Cost(RS3Rituals.GreCommun);
                     break;
-               case "ens":
+                case "ens":
                     msg += rsf.RitualSetup_Cost(RS3Rituals.GreEnsoul);
                     break;
-               case "pplasm":
+                case "pplasm":
                     msg += rsf.RitualSetup_Cost(RS3Rituals.PowNecro);
                     break;
-               case "pess":
+                case "pess":
                     msg += rsf.RitualSetup_Cost(RS3Rituals.PowEss);
                     break;
-               case "pcomm":
+                case "pcomm":
                     msg += rsf.RitualSetup_Cost(RS3Rituals.PowCommun);
                     break;
-               case "gens":
+                case "gens":
                     msg += rsf.RitualSetup_Cost(RS3Rituals.PowEnsoul);
                     break;
                 default:
@@ -608,7 +608,7 @@ namespace SteveBot_Rebuild.Modules
             await ReplyAsync(msg);
         }
 
-        
+
         /// <summary>
         /// Takes the glyph/rank and the amount and outputs the cost
         /// </summary>
@@ -701,7 +701,7 @@ namespace SteveBot_Rebuild.Modules
             Embed embed = EmbedBuilder.Build();
             await ReplyAsync(embed: embed);
         }
-       
+
         [Command("PD2RandReact")]
         public async Task PD2Rand()
         {
@@ -715,12 +715,12 @@ namespace SteveBot_Rebuild.Modules
                 $"\n{BotProgram.emojis[4]} Randomize Melee" +
                 $"\n{BotProgram.emojis[5]} Randomize Deployable" +
                 $"\n{BotProgram.emojis[6]} Randomize Armor" +
-                $"\n{BotProgram.emojis[7]} Randomize Difficulty" + 
+                $"\n{BotProgram.emojis[7]} Randomize Difficulty" +
                 $"\n{BotProgram.emojis[9]} Randomize!"
                ).WithCurrentTimestamp();
             Embed embed = EmbedBuilder.Build();
             var item = await ReplyAsync(embed: embed);
-            await item.AddReactionsAsync(BotProgram.emojis.Where(x=>x != BotProgram.emojis[8]).ToArray());
+            await item.AddReactionsAsync(BotProgram.emojis.Where(x => x != BotProgram.emojis[8]).ToArray());
         }
         #endregion Payday
         #region Call of Duty
@@ -752,7 +752,7 @@ namespace SteveBot_Rebuild.Modules
     $"\n{BotProgram.emojis[4]} Randomize Field Upgrade" +
     $"\n{BotProgram.emojis[5]} Randomize Perk Order" +
     $"\n{BotProgram.emojis[6]} Randomize Support Item" +
-    $"\n{BotProgram.emojis[7]} Randomize Tactical Item" + 
+    $"\n{BotProgram.emojis[7]} Randomize Tactical Item" +
     $"\n{BotProgram.emojis[8]} Randomize Lethal Item" +
     $"\n{BotProgram.emojis[9]} Randomize!"
    ).WithCurrentTimestamp();
@@ -800,7 +800,35 @@ namespace SteveBot_Rebuild.Modules
         }
         [Command("Oilman Legend")]
         public async Task OilmanLegend()
-            => await ReplyAsync(embed: SB_Content.OilMan.GameHandler.BuildLegend());
+        {
+            _ = await ReplyAsync(embed: SB_Content.OilMan.GameHandler.BuildTileLegend());
+            _ = await ReplyAsync(embed: new EmbedBuilder()
+                .WithTitle("Oilman Game")
+                .WithDescription(
+                "Game board is A-O across;\n 1-12 down: Top left tile would be a1, bottom right would be o12"
+                + $"\nom buy <region>: <region> can be a range or individual tiles EX:\n`A1:B4` or `A1,A2,A3,A4,A5,B1,B2,B3,B4,B5` or `A1:B4,B5`"
+                + $"\nom Bid x : puts in a bid of x for the currently selected tiles"
+                + $"\nom Claim : claims currently selected tiles"
+                + $"\n"
+                ).WithCurrentTimestamp()
+                .WithFooter("Game Commands")
+                .Build());
+        }
+        [Command("om Buy")]
+        public async Task OilmanBuy(string Positionals)
+        {
+
+        }
+        [Command("om bid")]
+        public async Task OilmanBid(int amount)
+        {
+
+        }
+        [Command("om Claim")]
+        public async Task OilmanClaim()
+        {
+
+        }
         [Command("Oilman Colors")]
         public async Task OilmanColors()
         {
