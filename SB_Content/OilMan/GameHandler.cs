@@ -123,7 +123,7 @@ namespace SB_Content.OilMan
             //Find 
             throw new NotImplementedException();
         }
-            #endregion Turn Based Actions
+        #endregion Turn Based Actions
         #endregion Game Command input
         #region Game Reaction input
         /// <summary>
@@ -133,18 +133,37 @@ namespace SB_Content.OilMan
         /// <param name="layout"></param>
         /// <param name="gameID"></param>
         /// <returns></returns>
-        public static async Task<bool> ReactionLayoutSelected(int layout, int gameID)
+        public static async Task<bool> ReactionLayoutSelected(IUser user, int layout)
         {
             if (Games == null) return false;
             //Safe Guards
             if (layout > 3 || layout < 0) return false;
-            if (gameID > Games.Count && Games.Count != 0) return false;
-            return await Games[gameID-1].SetLayout(layout);
+            foreach (GameState state in Games)
+                if (state.GameHost == user)
+                    return await state.SetLayout(layout);
+            return false;
         }
 
-        public static Tuple<bool,string> ReactionInteract()
+        public static async Task<Tuple<bool, string>> PlayerColorReaction(IUser user, Emoji color)
         {
-            throw new NotImplementedException();
+            return await Task.Run(() =>
+            {
+                //Find Game
+                foreach (GameState state in Games)
+                    if (state.PlayerCheck(user))
+                        //Find User
+                        foreach (Oilman_Player pl in state.Players)
+                            if (pl.User == user)
+                            {
+                                //Check that color is not already selected
+                                if (state.Players.Where(x => x.Player_Color == Player_Colors.First(x => x.Item2 == color)).ToArray().Length != 0)
+                                    return Tuple.Create(false, "Color has already been selected");
+                                //Add color
+                                pl.SetColors(Player_Colors.First(x => x.Item2 == color));
+                                return Tuple.Create(true, $"{user.Username} color has been set");
+                            }
+                return Tuple.Create(false, "Emoji or player not found");
+            });
         }
         #endregion Game Reaction input
        

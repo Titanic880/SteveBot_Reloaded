@@ -219,22 +219,26 @@ namespace SteveBot_Rebuild
                     case "Oilman Game":
                         if (message.Embeds.FirstOrDefault()!.Footer.ToString() == "Start Info")
                         {
-                            Emoji[] reac = new Emoji[] { ":one:", ":two:", ":three:" };
+                            //Emoji[] reac = new Emoji[] { ":one:", ":two:", ":three:" };
                             int throwup = 0;
-                            if (message.Reactions[reac[0]].ReactionCount != 1)
+                            //Find a reaction with a count not equal to bot add
+                            if (message.Reactions[emojis[0]].ReactionCount != 1)
                                 throwup = 1;
-                            else if (message.Reactions[reac[1]].ReactionCount != 1)
+                            else if (message.Reactions[emojis[1]].ReactionCount != 1)
                                 throwup = 2;
-                            else if (message.Reactions[reac[2]].ReactionCount != 1)
+                            else if (message.Reactions[emojis[2]].ReactionCount != 1)
                                 throwup = 3;
-                            if (await SB_Content.OilMan.GameHandler.ReactionLayoutSelected(throwup, Convert.ToInt32(message.Embeds.FirstOrDefault()!.Title.Split(':')[1])))
+                            //Pass layout to GameHandler to find the game and generate the layout
+                            if (await SB_Content.OilMan.GameHandler.ReactionLayoutSelected(reaction.User.Value, throwup))
                                 await message.AddReactionAsync(new Emoji("✅"));
                             else await message.AddReactionAsync(new Emoji(":x:"));
                         }
                         else if(message.Embeds.First()!.Footer.ToString() == "Color Selector")
                         {
-                        
+                            Tuple<bool,string> result = await SB_Content.OilMan.GameHandler.PlayerColorReaction(reaction.User.Value, new Emoji(reaction.Emote.Name));
+                            await reaction.Channel.SendMessageAsync($"{reaction.User.Value.Mention} {result.Item2}");
                         }
+
                         break;
                     default:
                         break;
