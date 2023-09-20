@@ -48,10 +48,10 @@ namespace SB_Content.OilMan
                 return Tuple.Create(true, $"Game has been created with an ID of {tmp.GameID}");
             });
         }
-        public static string CancelGame(IUser user)
+        public static string CancelGame(IUser User)
         {
             foreach (GameState game in Games)
-                if (game.GameHost == user)
+                if (game.GameHost == User)
                 {
                     Games.Remove(game);
                     return "Game has been cancelled";
@@ -70,29 +70,29 @@ namespace SB_Content.OilMan
                     if (game.GameHost == Host)
                     {
                         if (!game.StartGame())
-                            return new EmbedBuilder().WithDescription($"Not enough players to start! (Minimum of: {GameState.MinimumPlayers})").Build();
+                            return EmbedFactory($"Not enough players to start! (Minimum of: {GameState.MinimumPlayers})");
                         gameID = game.GameID;
                         //Check that all players have selected a color
                         foreach (Oilman_Player player in game.Players)
                             if (player.Player_Color == null)
-                                return new EmbedBuilder().WithDescription("Player(s) has yet to select a color!").Build();
+                                return EmbedFactory("Player(s) has yet to select a color!");
                         break;
                     }
                 }
                 if (gameID == -1)
-                    return new EmbedBuilder().WithDescription("User hosted game not found!").Build();
-                return await MapBuilder(gameID);
+                    return EmbedFactory("User hosted game not found!");
+                return await GameMapBuilder(Host);
             });
         }
-        public static string LeaveGame(IUser user)
+        public static string LeaveGame(IUser User)
         {
             foreach (GameState game in Games)
-                if (game.PlayerCheck(user) && game.GameHost != user)
+                if (game.PlayerCheck(User) && game.GameHost != User)
                 {
-                    game.RemovePlayer(user);
+                    game.RemovePlayer(User);
                     return $"you have left {game.GameHost}'s game";
                 }
-                else if (game.GameHost == user)
+                else if (game.GameHost == User)
                     return "Please use Cancel Game command as host";
             return "You were not found in a game";
         }
@@ -110,21 +110,21 @@ namespace SB_Content.OilMan
         public static async Task<Embed> StartTurn()
         {
 
-            return new EmbedBuilder().WithDescription("Not implemented.").Build();
+            return EmbedFactory("Not implemented.");
         }
 
         /// <summary>
-        /// Triggered by user, Clean up turn and output info
+        /// Triggered by User, Clean up turn and output info
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="User"></param>
         /// <returns></returns>
-        public static Embed EndTurn(IUser user)
+        public static Embed EndTurn(IUser User)
         {
             //Find 
             throw new NotImplementedException();
         }
-        //Return TBD
-        public static async Task<string> BuyLand(IUser user,string positional)
+        
+        public static async Task<string> BuyLand(IUser User,string positional)
         {
             return await Task.Run(() =>
             {
@@ -133,62 +133,56 @@ namespace SB_Content.OilMan
                 //Get gamestate
                 GameState? game = null;
                 foreach (GameState gs in Games)
-                    if (gs.PlayerCheck(user))
+                    if (gs.PlayerCheck(User))
                     {
-                        if (gs.CurrentPlayer.User != user) return $"{user.Mention} It is not your turn!";
+                        if (gs.CurrentPlayer.User != User) return $"{User.Mention} It is not your turn!";
                         game = gs;
                         break;
                     }
-
-                //Return item TBD
-                if (game == null) throw new NotImplementedException();
+                if (game == null) return "Active game was not found.";
 
                 List<Tuple<int, int>> tilesToBuy = new();
+                string[] QuardinentsToSolve = positional.Split(',');
 
-                //Get all items in a csv format
-                string[] objsolve = positional.Split(',');
-                for (int i = 0; i < objsolve.Length; i++)
+                for (int i = 0; i < QuardinentsToSolve.Length; i++)
                 {
-                    if (objsolve[i].Contains(':'))
+                    if (QuardinentsToSolve[i].Contains(':'))
                     {
-                        string[] objso = objsolve[i].Split(':');
-                        //return item TBD
-                        if (objso.Length != 2) throw new NotImplementedException();
-                        //Get Start/end positions
-                        Tuple<int, int> Startpos = quardGen(objso[0]);
-                        Tuple<int, int> Endpos = quardGen(objso[1]);
+                        string[] RangeToSolve = QuardinentsToSolve[i].Split(':');
+                        if (RangeToSolve.Length != 2) return "Invalid range has been provided.";
+
+                        Tuple<int, int> StartPosition = QuardinentGenerator(RangeToSolve[0]);
+                        Tuple<int, int> EndPosition = QuardinentGenerator(RangeToSolve[1]);
                         //Find all positions between the two
                         //Search across then down
-                        for(int y = Startpos.Item2; y < Endpos.Item2; y++) 
-                            for(int x = Startpos.Item1; x < Endpos.Item1; x++)
+                        for(int y = StartPosition.Item2; y < EndPosition.Item2; y++) 
+                            for(int x = StartPosition.Item1; x < EndPosition.Item1; x++)
                                 tilesToBuy.Add(Tuple.Create(x,y));  
                     }
-                    else //comma seperated object
+                    else //Simple Position item
                     {
-                        Tuple<int, int> val = quardGen(objsolve[i]);
-                        if (val.Item1 != -1)
-                            tilesToBuy.Add(val);
+                        Tuple<int, int> Quardinent = QuardinentGenerator(QuardinentsToSolve[i]);
+                        if (Quardinent.Item1 != -1)
+                            tilesToBuy.Add(Quardinent);
                         //Return item TBD
                         else throw new NotImplementedException();
                     }
                 }
                 //check size of tilestoBuy (cannot exceed set limit)
-                if(tilesToBuy.Count > GameState.MaxTileBuy)
+                if(tilesToBuy.Count > GameState.MaximumTileBuy)
                 {
-                    //return error
+                    return "Mis-matched Game Tiles.";
                 }
                 foreach(Tuple<int,int> tile in tilesToBuy)
                     if (game.CheckOwned(tile))
                     {
-                        //return error
+                        return "A tile was found to be already owned.";
                     }
                 game.SetBuyTiles(tilesToBuy.ToArray());
-
-
-                return "";
+                return $"You have set a bid for {positional}";
             });
             //Converts a-o<number> into positional data
-            static Tuple<int,int> quardGen(string quard)
+            static Tuple<int,int> QuardinentGenerator(string quard)
             {
                 if (!int.TryParse(quard.Skip(1).ToString(), out int y))
                     return Tuple.Create(-1,-1);
@@ -213,6 +207,18 @@ namespace SB_Content.OilMan
                 }, y);
             }
         }
+        public static Embed ClaimLand(IUser User)
+        {
+            GameState? CurrentGame = UserInGame(User);
+            if (CurrentGame == null) return EmbedFactory("Game not found", "Claim Failed");
+            if (CurrentGame.PlayerClaim(User))
+            {
+                if (CurrentGame.CurrentPlayer.User != User)
+                    return EmbedFactory($"{User} has stolen the claim from {CurrentGame.CurrentPlayer.User}!","Claim Stolen!");
+                return EmbedFactory($"{User} has claimed the active Territory!","Territory Claimed");
+            }
+            return EmbedFactory("Attempted to Double claim Territory.","Error Claiming");
+        }
         #endregion Turn Based Actions
         #endregion Game Command input
         #region Game Reaction input
@@ -223,36 +229,28 @@ namespace SB_Content.OilMan
         /// <param name="layout"></param>
         /// <param name="gameID"></param>
         /// <returns></returns>
-        public static async Task<bool> ReactionLayoutSelected(IUser user, int layout)
+        public static async Task<bool> ReactionLayoutSelected(IUser User, int layout)
         {
-            if (Games == null) return false;
-            //Safe Guards
-            if (layout > 3 || layout < 0) return false;
-            foreach (GameState state in Games)
-                if (state.GameHost == user)
-                    return await state.SetLayout(layout);
+            if (Games.Count == 0 || layout > 3 || layout < 0) return false;
+
+            GameState? CurrentGame = UserInGame(User);
+            if (CurrentGame == null) return false;
+            if(CurrentGame.GameHost == User) return await CurrentGame.SetLayout(layout);
             return false;
         }
 
-        public static async Task<Tuple<bool, string>> PlayerColorReaction(IUser user, Emoji color)
+        public static async Task<Tuple<bool, string>> PlayerColorReaction(IUser User, Emoji color)
         {
             return await Task.Run(() =>
             {
-                //Find Game
-                foreach (GameState state in Games)
-                    if (state.PlayerCheck(user))
-                        //Find User
-                        foreach (Oilman_Player pl in state.Players)
-                            if (pl.User == user)
-                            {
-                                //Check that color is not already selected
-                                if (state.Players.Where(x => x.Player_Color == Player_Colors.First(x => x.Item2 == color)).ToArray().Length != 0)
-                                    return Tuple.Create(false, "Color has already been selected");
-                                //Add color
-                                pl.SetColors(Player_Colors.First(x => x.Item2 == color));
-                                return Tuple.Create(true, $"{user.Username} color has been set");
-                            }
-                return Tuple.Create(false, "Emoji or player not found");
+                GameState? CurrentGame = UserInGame(User);
+                if (CurrentGame == null) return Tuple.Create(false, "Game/Player was not Found.");
+                //Check that color is not already selected
+                if (CurrentGame.Players.Where(x => x.Player_Color == Player_Colors.First(x => x.Item2 == color)).ToArray().Length != 0)
+                    return Tuple.Create(false, "Color has already been selected");
+                //Add color to user
+                CurrentGame.Players.Where(x => x.User == User).First().SetColors(Player_Colors.First(x => x.Item2 == color));
+                return Tuple.Create(true, $"{User.Username} color has been set");
             });
         }
         #endregion Game Reaction input
@@ -263,12 +261,13 @@ namespace SB_Content.OilMan
         /// </summary>
         /// <param name="GameID"></param>
         /// <returns></returns>
-        public static async Task<Embed> MapBuilder(int GameID)
+        public static async Task<Embed> GameMapBuilder(IUser User)
         {
-            if(Games == null) return new EmbedBuilder().WithDescription("Game not created").Build();
+            GameState? CurrentGame = UserInGame(User);
+            if(CurrentGame == null) return EmbedFactory("Game not created");
             return await Task.Run(() =>
             {
-                GameTile[][] Map = Games[GameID - 1].GetMap();
+                GameTile[][] Map = CurrentGame.GetMap();
                 string Rows = "";
                 for (int y = 1; y <= Map.Length; y++)
                 {
@@ -280,7 +279,7 @@ namespace SB_Content.OilMan
                 }
 
                 EmbedBuilder emb = new EmbedBuilder()
-                .WithTitle($"Oilman Game #{GameID}")
+                .WithTitle($"Oilman Game #{CurrentGame.GameID}")
                 .WithDescription(Rows)
                 .WithCurrentTimestamp();
                 return emb.Build();
@@ -289,9 +288,9 @@ namespace SB_Content.OilMan
         /// <summary>
         /// Returns map with Owner colors/unowned (no well depths)
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="User"></param>
         /// <returns></returns>
-        public static async Task<Embed> MapBuilder(IUser user)
+        public static async Task<Embed> OwnedTilesMapBuilder()
         {
             throw new NotImplementedException();
         }
@@ -319,42 +318,49 @@ namespace SB_Content.OilMan
             return emb;
         }
 
+        public static Embed BuildBidder(IUser User, int currentbid)
+        {
+            string EmbedDesc = "Game Not Found.";
+            GameState? CurrentGame = UserInGame(User);
+            if (CurrentGame != null)
+            {
+                CurrentGame.Players.First(x => x.User == User).Bid = currentbid;
+                EmbedDesc = $"Current bid is from {User} for {currentbid}\n";
+                foreach (Oilman_Player pl in CurrentGame.Players)
+                    EmbedDesc += $"{pl} {pl.Player_Color.Item2}: Money: ${pl.Money}, Bid: ${pl.Bid}\n";
+            }
+            return EmbedFactory(EmbedDesc);
+        }
         /// <summary>
         /// Returns a Color pallete Embed of current colors
         /// </summary>
         /// <returns></returns>
         public static Embed BuildColorSelector(IUser User)
         {
-            //Check if user is part of a game
-            GameState? userGame = Games.Find(x => x.PlayerCheck(User));
-            string embdesc = "";
+            GameState? userGame = UserInGame(User);
+            string embedDescription = "";
             //Sets up default embed
-            EmbedBuilder DefaultEmbed = new EmbedBuilder()
-                .WithTitle("Oilman Game").WithCurrentTimestamp().WithFooter("Color Selector");
             if (userGame == null)
             {
                 for (int i = 0; i < Player_Colors.Length; i++)
-                    embdesc += $"{Player_Colors[i].Item1} ; {Player_Colors[i].Item1}\n";
-                return DefaultEmbed.WithDescription(embdesc).Build();
+                    embedDescription += $"{Player_Colors[i].Item1} ; {Player_Colors[i].Item1}\n";
+                return EmbedFactory(embedDescription,Footer:"Color Selection");
             }
-
-            DefaultEmbed = DefaultEmbed.WithTitle($"Oilman Game: {userGame.GameID}");
-            embdesc = "";
-            int len = 0;
             //Build Game specific Colors
             for (int i = 0; i < Player_Colors.Length; i++)
             {
-                len = embdesc.Length;
-               foreach(Oilman_Player pl in userGame.Players)
+                bool ColorIsClaimed = false;
+                foreach (Oilman_Player pl in userGame.Players)
                     if (pl.Player_Color == Player_Colors[i])
                     {
-                        embdesc += $"{pl.User}: {Player_Colors[i].Item1} ; {Player_Colors[i].Item1}\n";
-                        break;
+                        embedDescription += $"{pl.User}: {Player_Colors[i].Item1} ; {Player_Colors[i].Item1}\n";
+                        ColorIsClaimed = true;
+                        continue;
                     }
-               if(len == embdesc.Length)
-                    embdesc += $"unclaimed: {Player_Colors[i].Item1} ; {Player_Colors[i].Item1}\n";
+                if (!ColorIsClaimed)
+                    embedDescription += $"unclaimed: {Player_Colors[i].Item1} ; {Player_Colors[i].Item1}\n";
             }
-            return DefaultEmbed.WithDescription(embdesc).Build();
+            return EmbedFactory(embedDescription, $"Oilman Game: {userGame.GameID}", "Color Selector");
         }
         public static Emoji[] GetColorReaction()
         {
@@ -365,5 +371,23 @@ namespace SB_Content.OilMan
         }
         #endregion User Help
         #endregion Game output
+
+        internal static Embed EmbedFactory(string Description,string Title = "" ,string Footer = "")
+        {
+            if(Footer == "" && Title == "")
+                return new EmbedBuilder().WithCurrentTimestamp().WithDescription(Description).Build();
+            if(Title == "" && Footer != "")
+                return new EmbedBuilder().WithFooter(Footer).WithDescription(Description).WithCurrentTimestamp().Build();
+            if(Title != "" && Footer == "")
+                return new EmbedBuilder().WithTitle(Title).WithDescription(Description).WithCurrentTimestamp().Build();
+            return new EmbedBuilder().WithTitle(Title).WithDescription(Description).WithFooter(Footer).WithCurrentTimestamp().Build();
+        }
+        private static GameState? UserInGame(IUser User)
+        {
+            foreach (GameState game in Games)
+                if (game.PlayerCheck(User))
+                    return game;
+            return null;
+        }
     }
 }

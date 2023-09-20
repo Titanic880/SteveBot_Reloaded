@@ -4,7 +4,7 @@ namespace SB_Content.OilMan
 {
     internal class GameTile
     {
-        private static Random rand = new Random();
+        private static readonly Random rand = new();
         //Income Calculation items
         private const int baseincome = 2000;
         private const double WtrMultiplier = 2.5;
@@ -129,7 +129,6 @@ namespace SB_Content.OilMan
             if (WellDepth == 3) return GameHandler.GameAssets[6].Name;
             //Empty Well
             if (WellDepth == 4) return GameHandler.GameAssets[0].Name;
-
             return GameHandler.GameAssets[1].Name;
         }
     }

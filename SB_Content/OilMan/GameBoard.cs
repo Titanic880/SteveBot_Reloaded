@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System;
 using Discord;
+using System.Collections.Generic;
 
 namespace SB_Content.OilMan
 {
@@ -29,12 +30,17 @@ namespace SB_Content.OilMan
         FirstToThird = 90000,
         FullDepth = 115000
     }
+    
 
     internal class GameBoard
     {
         private const int GameWidth = 15;
         private const int GameHeight = 12;
-        private readonly Oilman_Player BuySave = new("OVERRIDE_STATE");
+        private readonly Oilman_Player BuySave;
+        public GameBoard(int GameID)
+        {
+            BuySave = new Oilman_Player(new Blank_User(), GameID);
+        }
         public GameTile[][] GameMap { get; private set; } = Array.Empty<GameTile[]>();
         //             y:x
         internal async Task<bool> GenerateMap(int Type)
@@ -56,7 +62,7 @@ namespace SB_Content.OilMan
                     }
                     return true;
                 }
-                catch (Exception ex)
+                catch //(Exception ex)
                 {
                     return false;
                 }
@@ -64,26 +70,19 @@ namespace SB_Content.OilMan
         }
         internal void SetBuyState(Tuple<int,int>[] tiles)
         {
-            //Places a temp user on the tiles
-            ClaimLand(BuySave,tiles);
+            foreach(Tuple<int,int> Tile in tiles)
+                GameMap[Tile.Item1][Tile.Item2].SetOwner(BuySave);
         }
-        internal Tuple<bool, string> ClaimLand(Oilman_Player _player, Tuple<int, int>[] Tiles)
+        internal bool ClaimLand(Oilman_Player _player)
         {
-            Tuple<bool, string> retitem = Tuple.Create(true, $"Land has been claimed by {_player}");
-
-            foreach (Tuple<int, int> tup in Tiles)
+            foreach (GameTile tile in BuySave.OwnedTiles)
             {
-                if (!GameMap[tup.Item1][tup.Item2].SetOwner(_player))
-                {
-                    retitem = Tuple.Create(false, $"Tile Already owned: {tup.Item1}:{tup.Item2}");
-                    break;
-                }
-                _player.OwnedTiles.Add(GameMap[tup.Item1][tup.Item2]);
+                if (!tile.SetOwner(_player)) return false;
+                _player.OwnedTiles.Add(tile);
             }
-            return retitem;
+            return true;
         }
         internal Tuple<bool, string> DrillTile(Drilling_Types _Drill, Tuple<int, int> Tile)
-            => GameMap[Tile.Item1][Tile.Item2].Drill(_Drill);
-        
+            => GameMap[Tile.Item1][Tile.Item2].Drill(_Drill); 
     }
 }

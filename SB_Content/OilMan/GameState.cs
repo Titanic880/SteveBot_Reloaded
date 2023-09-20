@@ -7,14 +7,14 @@ using System;
 
 namespace SB_Content.OilMan
 {
-    internal class GameState
+    public class GameState
     {
         public readonly int GameID;
         #region Constant Information
         internal const int MinimumPlayers = 2;
         internal const int MaximumPlayers = 7;
-        internal const int MaxTurns = 500;
-        internal const int MaxTileBuy = 9;
+        internal const int MaximumTurns = 500;
+        internal const int MaximumTileBuy = 9;
         #endregion Constant Information
         #region Runtime Information
         public bool GameActive { get; private set; } = false;
@@ -23,53 +23,32 @@ namespace SB_Content.OilMan
         internal IUser GameHost { get; private set; }
 
         internal List<Oilman_Player> Players { get; set; } = new();
-        public Oilman_Player CurrentPlayer { get => Players[CP]; }
+        internal Oilman_Player CurrentPlayer { get => Players[CP]; }
         public int CurrentTurn { get; private set; }
         private int CP = -1;
-
-        private Tuple<int, int>[] tilebuy = Array.Empty<Tuple<int, int>>();
-
-
         public GameState(IUser Host,int GameID)
         {
             this.GameID = GameID;
             GameHost = Host;
-            Board = new();
+            Board = new(GameID);
         }
         internal bool StartGame()
         {
-            if(Players.Count < MinimumPlayers) return false;
+            if(Players.Count < MinimumPlayers) 
+                return false;
+
             GameActive = true;
             CurrentTurn = 0;
             CP = 0;
             return true;
         }
-        /// <summary>
-        /// Updates Main Interactions
-        /// </summary>
-        private void Update()
-        {
-
-        }
-
-        /// <summary>
-        /// Updates start of each turn
-        /// </summary>
-        private void UpdatePlayer()
-        {
-            Players[CP].StartTurnUpdate();
-            
-            
-        }
-
-        /// <summary>
-        /// Updates end of each turn
-        /// </summary>
-        private void EndPlayerTurn()
+        private void EndCurrentPlayerTurn()
         {
             Players[CP].EndTurnUpdate();
             if (Players[CP] == Players[^1])
                 CP = 0;
+            else 
+                CP++;
         }
         /// <summary>
         /// returns if a specified tile is owned
@@ -82,16 +61,16 @@ namespace SB_Content.OilMan
         }
         internal void SetBuyTiles(Tuple<int, int>[] tiles)
         {
-            tilebuy = tiles;
+            Board.SetBuyState(tiles);
         }
         /// <summary>
         /// Claims the currently contested region
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        internal bool PlayerClaim(IUser user, object region)
+        internal bool PlayerClaim(IUser user)
         {
-            throw new Exception("Not Implemented");
+            return Board.ClaimLand(Players.Where(x => x.User == user).First());
         }
 
         /// <summary>

@@ -7,9 +7,7 @@ namespace Stevebot_DB.Framework_ENT
     internal class SB_DBContext : DbContext
     {
         internal DbSet<SB_Content.Runescape.RSJson> Rs_Data { get; set; }
-        //internal DbSet<> Rs_Data { get; set; }
-
-
+        internal DbSet<SB_Content.OilMan.GameState> Oilman_States { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {

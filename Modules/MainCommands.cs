@@ -356,19 +356,6 @@ namespace SteveBot_Rebuild.Modules
             timerSeconds++;
         }
         #endregion BlackJack
-        /*
-        #region Reactions
-        [Command("")]
-        public async Task gg(IEmote emote, RequestOptions options = null)
-        {
-            await MailSettingsSectionGroup.
-        }
-        IAsyncEnumerable<IReadOnlyCollection<IUser>> GetReactionUsersAsync(IEmote emoji, in T limit, RequestOptions options = null)
-        {
-            FlattenAsync<T>(IAsyncEnumerable<IEnumerable<>>);
-        }
-        #endregion Reactions*/
-        //Move to own file when figured out
         #region Runescape 
 
         /// <summary>
@@ -762,8 +749,8 @@ namespace SteveBot_Rebuild.Modules
         }
         #endregion Call of Duty
         #region Oilman
-        [Command("Oilman init")]
-        public async Task initOilman()
+        [Command("om init")]
+        public async Task InitOilman()
         {
             Tuple<bool, string> result = await SB_Content.OilMan.GameHandler.InitilizeNewGame(Context.Message.Author);
             await ReplyAsync(result.Item2);
@@ -785,20 +772,20 @@ namespace SteveBot_Rebuild.Modules
                 await item.AddReactionsAsync(new Emoji[] { ":one:", ":two:", ":three:" });
             }
         }
-        [Command("Oilman cancel")]
+        [Command("om cancel")]
         public async Task OilmanCancel()
         {
-            string result = SB_Content.OilMan.GameHandler.CancelGame(Context.Message.Author);
+            string result = GameHandler.CancelGame(Context.Message.Author);
             await ReplyAsync(result);
         }
-        [Command("Oilman start")]
+        [Command("om start")]
         public async Task StartOilmanGame()
         {
             Embed result = await GameHandler.StartGame(Context.Message.Author);
             await ReplyAsync(embed: result);
             await GameHandler.StartTurn();
         }
-        [Command("Oilman Legend")]
+        [Command("om Legend")]
         public async Task OilmanLegend()
         {
             _ = await ReplyAsync(embed: GameHandler.BuildTileLegend());
@@ -806,7 +793,7 @@ namespace SteveBot_Rebuild.Modules
                 .WithTitle("Oilman Game")
                 .WithDescription(
                 "Game board is A-O across;\n 1-12 down: Top left tile would be a1, bottom right would be o12"
-                + $"\nom buy <region>: <region> can be a range or individual tiles EX:\n`A1:B4` or `A1,A2,A3,A4,A5,B1,B2,B3,B4,B5` or `A1:B4,B5`"
+                + $"\nom buy <price> <region>: <region> can be a range or individual tiles EX:\n`A1:B4` or `A1,A2,A3,A4,A5,B1,B2,B3,B4,B5` or `A1:B4,B5`"
                 + $"\nom Bid x : puts in a bid of x for the currently selected tiles"
                 + $"\nom Claim : claims currently selected tiles"
                 + $"\n"
@@ -815,26 +802,28 @@ namespace SteveBot_Rebuild.Modules
                 .Build());
         }
         [Command("om Buy")]
-        public async Task OilmanBuy(string Positionals)
+        public async Task OilmanBuy(int Price, string Positionals)
         {
             string result = await GameHandler.BuyLand(Context.Message.Author, Positionals);
             await ReplyAsync(result);
+            await OilmanBid(Price);
         }
         [Command("om bid")]
         public async Task OilmanBid(int amount)
         {
-
+            Embed result = GameHandler.BuildBidder(Context.Message.Author, amount);
+            _ = await ReplyAsync(embed: result);
         }
         [Command("om Claim")]
         public async Task OilmanClaim()
         {
-
+            await ReplyAsync(embed: GameHandler.ClaimLand(Context.Message.Author));
         }
-        [Command("Oilman Colors")]
+        [Command("om Colors")]
         public async Task OilmanColors()
         {
-            var res = await ReplyAsync(embed: GameHandler.BuildColorSelector(Context.Message.Author));
-            await res.AddReactionsAsync(GameHandler.GetColorReaction());
+            var result = await ReplyAsync(embed: GameHandler.BuildColorSelector(Context.Message.Author));
+            await result.AddReactionsAsync(GameHandler.GetColorReaction());
         }
         #endregion Oilman
     }
