@@ -214,7 +214,8 @@ namespace SteveBot_Rebuild
                             await reaction.Channel.SendMessageAsync($"<@{reaction.UserId}> ", embed: builder.Build());
                         }
                         break;
-                    case "Oilman Game":
+
+                    /*case "Oilman Game":
                         if (message.Embeds.FirstOrDefault()!.Footer.ToString() == "Start Info")
                         {
                             //Emoji[] reac = new Emoji[] { ":one:", ":two:", ":three:" };
@@ -227,17 +228,16 @@ namespace SteveBot_Rebuild
                             else if (message.Reactions[emojis[2]].ReactionCount != 1)
                                 throwup = 3;
                             //Pass layout to GameHandler to find the game and generate the layout
-                            if (await SB_Content.OilMan.GameHandler.ReactionLayoutSelected(reaction.User.Value, throwup))
+                            if (await SB_Content.OilMan.OilmanDiscordInterface.ReactionLayoutSelected(reaction.User.Value, throwup))
                                 await message.AddReactionAsync(new Emoji("✅"));
                             else await message.AddReactionAsync(new Emoji(":x:"));
                         }
                         else if(message.Embeds.First()!.Footer.ToString() == "Color Selector")
                         {
-                            Tuple<bool,string> result = await SB_Content.OilMan.GameHandler.PlayerColorReaction(reaction.User.Value, new Emoji(reaction.Emote.Name));
+                            Tuple<bool,string> result = await SB_Content.OilMan.OilmanDiscordInterface.PlayerColorReaction(reaction.User.Value, new Emoji(reaction.Emote.Name));
                             await reaction.Channel.SendMessageAsync($"{reaction.User.Value.Mention} {result.Item2}");
                         }
-
-                        break;
+                        break;*/
                     default:
                         break;
                 }

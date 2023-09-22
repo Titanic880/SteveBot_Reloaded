@@ -749,10 +749,10 @@ namespace SteveBot_Rebuild.Modules
         }
         #endregion Call of Duty
         #region Oilman
-        [Command("om init")]
-        public async Task InitOilman()
+//[Command("om init")]
+        private async Task InitOilman()
         {
-            Tuple<bool, string> result = await SB_Content.OilMan.GameHandler.InitilizeNewGame(Context.Message.Author);
+            Tuple<bool, string> result = await OilmanDiscordInterface.InitilizeNewGame(Context.Message.Author);
             await ReplyAsync(result.Item2);
             if (result.Item1)
             {
@@ -772,23 +772,23 @@ namespace SteveBot_Rebuild.Modules
                 await item.AddReactionsAsync(new Emoji[] { ":one:", ":two:", ":three:" });
             }
         }
-        [Command("om cancel")]
-        public async Task OilmanCancel()
+        //[Command("om cancel")]
+        private async Task OilmanCancel()
         {
-            string result = GameHandler.CancelGame(Context.Message.Author);
+            string result = OilmanDiscordInterface.CancelGame(Context.Message.Author);
             await ReplyAsync(result);
         }
-        [Command("om start")]
-        public async Task StartOilmanGame()
+        //[Command("om start")]
+        private async Task StartOilmanGame()
         {
-            Embed result = await GameHandler.StartGame(Context.Message.Author);
+            Embed result = await OilmanDiscordInterface.StartGame(Context.Message.Author);
             await ReplyAsync(embed: result);
-            await GameHandler.StartTurn();
+            await OilmanDiscordInterface.StartTurn();
         }
-        [Command("om Legend")]
-        public async Task OilmanLegend()
+        //[Command("om Legend")]
+        private async Task OilmanLegend()
         {
-            _ = await ReplyAsync(embed: GameHandler.BuildTileLegend());
+            _ = await ReplyAsync(embed: OilmanDiscordInterface.BuildTileLegend());
             _ = await ReplyAsync(embed: new EmbedBuilder()
                 .WithTitle("Oilman Game")
                 .WithDescription(
@@ -801,29 +801,29 @@ namespace SteveBot_Rebuild.Modules
                 .WithFooter("Game Commands")
                 .Build());
         }
-        [Command("om Buy")]
-        public async Task OilmanBuy(int Price, string Positionals)
+        //[Command("om Buy")]
+        private async Task OilmanBuy(int Price, string Positionals)
         {
-            string result = await GameHandler.BuyLand(Context.Message.Author, Positionals);
+            string result = await OilmanDiscordInterface.BuyLand(Context.Message.Author, Positionals);
             await ReplyAsync(result);
             await OilmanBid(Price);
         }
-        [Command("om bid")]
-        public async Task OilmanBid(int amount)
+        //[Command("om bid")]
+        private async Task OilmanBid(int amount)
         {
-            Embed result = GameHandler.BuildBidder(Context.Message.Author, amount);
+            Embed result = OilmanDiscordInterface.UserBid(Context.Message.Author, amount);
             _ = await ReplyAsync(embed: result);
         }
-        [Command("om Claim")]
-        public async Task OilmanClaim()
+        //[Command("om Claim")]
+        private async Task OilmanClaim()
         {
-            await ReplyAsync(embed: GameHandler.ClaimLand(Context.Message.Author));
+            await ReplyAsync(embed: OilmanDiscordInterface.ClaimLand(Context.Message.Author));
         }
-        [Command("om Colors")]
-        public async Task OilmanColors()
+        //[Command("om Colors")]
+        private async Task OilmanColors()
         {
-            var result = await ReplyAsync(embed: GameHandler.BuildColorSelector(Context.Message.Author));
-            await result.AddReactionsAsync(GameHandler.GetColorReaction());
+            var result = await ReplyAsync(embed: OilmanDiscordInterface.BuildColorSelector(Context.Message.Author));
+            await result.AddReactionsAsync(OilmanDiscordInterface.GetColorReaction());
         }
         #endregion Oilman
     }

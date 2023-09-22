@@ -44,8 +44,8 @@ namespace SB_Content.OilMan
             Money -= amount;
             return true;
         }
-        public void StartTurnUpdate()
-        {
+        public void GameUpdate()
+        { 
             Money += Income;
         }
         public override string ToString()

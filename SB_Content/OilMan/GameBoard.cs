@@ -1,7 +1,5 @@
 ﻿using System.Threading.Tasks;
 using System;
-using Discord;
-using System.Collections.Generic;
 
 namespace SB_Content.OilMan
 {
@@ -36,12 +34,13 @@ namespace SB_Content.OilMan
     {
         private const int GameWidth = 15;
         private const int GameHeight = 12;
+        public bool IsBuyCycle { get => BuySave.OwnedTiles.Count > 0; }
         private readonly Oilman_Player BuySave;
         public GameBoard(int GameID)
         {
-            BuySave = new Oilman_Player(new Blank_User(), GameID);
+            BuySave = new(new Blank_User(),GameID);
         }
-        public GameTile[][] GameMap { get; private set; } = Array.Empty<GameTile[]>();
+      public GameTile[][] GameMap { get; private set; } = Array.Empty<GameTile[]>();
         //             y:x
         internal async Task<bool> GenerateMap(int Type)
         {

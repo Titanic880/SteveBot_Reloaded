@@ -7,10 +7,7 @@ using System;
 
 namespace SB_Content.OilMan
 {
-    /// <summary>
-    /// Highest level of Oilman Based Objects
-    /// </summary>
-    public static class GameHandler
+    public static class OilmanDiscordInterface
     {
         private static readonly List<GameState> Games = new();
 
@@ -34,7 +31,6 @@ namespace SB_Content.OilMan
             Tuple.Create(new Emoji(":blue_circle:"),new Emoji(":blue_square:"))
         };
         #endregion Game Assets
-
         #region Game Command input
         #region Game State Actions
         public async static Task<Tuple<bool,string>> InitilizeNewGame(IUser Host)
@@ -253,8 +249,7 @@ namespace SB_Content.OilMan
                 return Tuple.Create(true, $"{User.Username} color has been set");
             });
         }
-        #endregion Game Reaction input
-       
+        #endregion Game Reaction input   
         #region Game output
         /// <summary>
         /// Returns Map as Generic object
@@ -267,22 +262,16 @@ namespace SB_Content.OilMan
             if(CurrentGame == null) return EmbedFactory("Game not created");
             return await Task.Run(() =>
             {
-                GameTile[][] Map = CurrentGame.GetMap();
                 string Rows = "";
-                for (int y = 1; y <= Map.Length; y++)
+                for (int y = 1; y <= CurrentGame.GameMap.Length; y++)
                 {
                     Rows += "\n";
                     //Removed due to description limit
                     //Rows += $"\n`{(y < 10 ? "0" :"") }{y}`"; 
-                    for(int x = 0; x < Map[y-1].Length; x++)
-                        Rows += Map[y-1][x].ToString();
+                    for(int x = 0; x < CurrentGame.GameMap[y-1].Length; x++)
+                        Rows += CurrentGame.GameMap[y-1][x].ToString();
                 }
-
-                EmbedBuilder emb = new EmbedBuilder()
-                .WithTitle($"Oilman Game #{CurrentGame.GameID}")
-                .WithDescription(Rows)
-                .WithCurrentTimestamp();
-                return emb.Build();
+                return EmbedFactory(Rows,Title: $"Oilman Game #{CurrentGame.GameID}");
             });
         }
         /// <summary>
@@ -294,47 +283,53 @@ namespace SB_Content.OilMan
         {
             throw new NotImplementedException();
         }
-        #region User Help
-        /// <summary>
-        /// Outputs the Emoji Legend of what tiles are
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public static Embed BuildTileLegend()
-        {
-            //Build Map
-            EmbedBuilder builder = new EmbedBuilder()
-            .WithTitle("Oilman Icon Legend")
-            .WithDescription($"{GameAssets[2]}: Land Tile"
-                + $"\n{GameAssets[3]} Water Tile"
-                + $"\n{GameAssets[7]} Land Tile for purchase"
-                + $"\n{GameAssets[8]} Water Tile for purchase"
-                + $"\n{GameAssets[0]} Zero oil Found Tile"
-                + $"\n{GameAssets[4]} Shallow Well"
-                + $"\n{GameAssets[5]} Medium Depth Well"
-                + $"\n {GameAssets[6]} Deep Well"
-                ).WithCurrentTimestamp();
-            Embed emb = builder.Build();
-            return emb;
-        }
+        #region User Interaction
 
-        public static Embed BuildBidder(IUser User, int currentbid)
+
+        public static Embed UserBid(IUser User, int currentbid)
         {
             string EmbedDesc = "Game Not Found.";
             GameState? CurrentGame = UserInGame(User);
             if (CurrentGame != null)
-            {
-                CurrentGame.Players.First(x => x.User == User).Bid = currentbid;
-                EmbedDesc = $"Current bid is from {User} for {currentbid}\n";
-                foreach (Oilman_Player pl in CurrentGame.Players)
-                    EmbedDesc += $"{pl} {pl.Player_Color.Item2}: Money: ${pl.Money}, Bid: ${pl.Bid}\n";
-            }
+                EmbedDesc = GameMapFactory(CurrentGame);
             return EmbedFactory(EmbedDesc);
         }
-        /// <summary>
-        /// Returns a Color pallete Embed of current colors
-        /// </summary>
-        /// <returns></returns>
+        #endregion User Interaction
+        #endregion Game output
+
+        #region Factories
+        internal static Embed EmbedFactory(string Description,string Title = "" ,string Footer = "")
+        {
+            if(Footer == "" && Title == "")
+                return new EmbedBuilder().WithCurrentTimestamp().WithDescription(Description).Build();
+            if(Title == "" && Footer != "")
+                return new EmbedBuilder().WithFooter(Footer).WithDescription(Description).WithCurrentTimestamp().Build();
+            if(Title != "" && Footer == "")
+                return new EmbedBuilder().WithTitle(Title).WithDescription(Description).WithCurrentTimestamp().Build();
+            return new EmbedBuilder().WithTitle(Title).WithDescription(Description).WithFooter(Footer).WithCurrentTimestamp().Build();
+        }
+        internal static string GameMapFactory(GameState CurrentGame)
+        {
+            GameTile[][] GameBoard = CurrentGame.GameMap;
+            string Rows = "";
+            for (int y = 1; y <= GameBoard.Length; y++)
+            {
+                Rows += "\n";
+                for (int x = 0; x < GameBoard[y - 1].Length; x++)
+                {
+                    Rows += GameBoard[y - 1][x].ToString();
+                }
+            }
+
+            return Rows;
+        }
+        private static GameState? UserInGame(IUser User)
+        {
+            foreach (GameState game in Games)
+                if (game.PlayerCheck(User))
+                    return game;
+            return null;
+        }
         public static Embed BuildColorSelector(IUser User)
         {
             GameState? userGame = UserInGame(User);
@@ -344,7 +339,7 @@ namespace SB_Content.OilMan
             {
                 for (int i = 0; i < Player_Colors.Length; i++)
                     embedDescription += $"{Player_Colors[i].Item1} ; {Player_Colors[i].Item1}\n";
-                return EmbedFactory(embedDescription,Footer:"Color Selection");
+                return EmbedFactory(embedDescription, Footer: "Color Selection");
             }
             //Build Game specific Colors
             for (int i = 0; i < Player_Colors.Length; i++)
@@ -369,25 +364,29 @@ namespace SB_Content.OilMan
                 items[i] = Player_Colors[i].Item2;
             return items;
         }
-        #endregion User Help
-        #endregion Game output
 
-        internal static Embed EmbedFactory(string Description,string Title = "" ,string Footer = "")
+        /// <summary>
+        /// Outputs the Emoji Legend of what tiles are
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public static Embed BuildTileLegend()
         {
-            if(Footer == "" && Title == "")
-                return new EmbedBuilder().WithCurrentTimestamp().WithDescription(Description).Build();
-            if(Title == "" && Footer != "")
-                return new EmbedBuilder().WithFooter(Footer).WithDescription(Description).WithCurrentTimestamp().Build();
-            if(Title != "" && Footer == "")
-                return new EmbedBuilder().WithTitle(Title).WithDescription(Description).WithCurrentTimestamp().Build();
-            return new EmbedBuilder().WithTitle(Title).WithDescription(Description).WithFooter(Footer).WithCurrentTimestamp().Build();
+            //Build Map
+            EmbedBuilder builder = new EmbedBuilder()
+            .WithTitle("Oilman Icon Legend")
+            .WithDescription($"{GameAssets[2]}: Land Tile"
+                + $"\n{GameAssets[3]} Water Tile"
+                + $"\n{GameAssets[7]} Land Tile for purchase"
+                + $"\n{GameAssets[8]} Water Tile for purchase"
+                + $"\n{GameAssets[0]} Zero oil Found Tile"
+                + $"\n{GameAssets[4]} Shallow Well"
+                + $"\n{GameAssets[5]} Medium Depth Well"
+                + $"\n {GameAssets[6]} Deep Well"
+                ).WithCurrentTimestamp();
+            Embed emb = builder.Build();
+            return emb;
         }
-        private static GameState? UserInGame(IUser User)
-        {
-            foreach (GameState game in Games)
-                if (game.PlayerCheck(User))
-                    return game;
-            return null;
-        }
+        #endregion Factories
     }
 }

@@ -11,4 +11,8 @@
     <PackageReference Include="Discord.Net.WebSocket" Version="3.12.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Payday\PD3\" />
+  </ItemGroup>
+
 </Project>

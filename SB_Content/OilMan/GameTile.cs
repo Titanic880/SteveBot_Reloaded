@@ -117,19 +117,19 @@ namespace SB_Content.OilMan
             if (!VisibleDepth)
             {
                 if (Owner == null || Owner.Player_Color == null)
-                    return LandState ? GameHandler.GameAssets[2].Name : GameHandler.GameAssets[3].Name;
+                    return LandState ? OilmanDiscordInterface.GameAssets[2].Name : OilmanDiscordInterface.GameAssets[3].Name;
                 return LandState ? Owner.Player_Color.Item1.Name : Owner.Player_Color.Item2.Name;
             }
 
             //Shallow Well
-            if (WellDepth == 1) return GameHandler.GameAssets[4].Name;
+            if (WellDepth == 1) return OilmanDiscordInterface.GameAssets[4].Name;
             //Medium Well
-            if (WellDepth == 2) return GameHandler.GameAssets[5].Name;
+            if (WellDepth == 2) return OilmanDiscordInterface.GameAssets[5].Name;
             //Deepest Well
-            if (WellDepth == 3) return GameHandler.GameAssets[6].Name;
+            if (WellDepth == 3) return OilmanDiscordInterface.GameAssets[6].Name;
             //Empty Well
-            if (WellDepth == 4) return GameHandler.GameAssets[0].Name;
-            return GameHandler.GameAssets[1].Name;
+            if (WellDepth == 4) return OilmanDiscordInterface.GameAssets[0].Name;
+            return OilmanDiscordInterface.GameAssets[1].Name;
         }
     }
 }
