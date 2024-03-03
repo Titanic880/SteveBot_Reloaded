@@ -1,10 +1,8 @@
-﻿using SB_Content.Call_of_Duty;
-using System.Linq;
+﻿using System.Linq;
 using System;
 
-namespace SB_Content.Call_of_Duty.Randomizer
-{
-    public class ZombRandLib : WeaponNames
+namespace SB_Content.Call_of_Duty.Randomizer {
+    public class ZombRandLib : IRandomizer
     {
         readonly Random rand = new();
         readonly ZmPerks perks = new();
@@ -63,6 +61,28 @@ namespace SB_Content.Call_of_Duty.Randomizer
         #endregion Info
 
         #region SetInfo
+        public void Randomize(bool[] ToRandomize) {
+            Wep = ToRandomize[0];
+            SetDLC(ToRandomize[1]);
+            Box_OutofCat = ToRandomize[2];
+            Wall_OutofCat = ToRandomize[3];
+            FR = ToRandomize[4];
+            PerkOrd = ToRandomize[5];
+            SR = ToRandomize[6];
+            TR = ToRandomize[7];
+            LR = ToRandomize[8];
+
+            RandEquipment();
+            if (PerkOrd) {
+                PerkOrder();
+            }
+            if (Wep) {
+                RandomWeapon();
+            }
+            SetOutofCategory();
+
+        }
+
         public void ApplyOptions(bool[] Sets)
         {
             Wep = Sets[0];
@@ -156,11 +176,12 @@ namespace SB_Content.Call_of_Duty.Randomizer
         /// <returns></returns>
         private void RandomWeapon()
         {
-            int Category = rand.Next(WeaponCategories.Length - 1);
-            string ret = WeaponCategories[Category] + ",";
+            WeaponNames names = new();
+            int Category = rand.Next(names.WeaponCategories.Length - 1);
+            string ret = names.WeaponCategories[Category] + ",";
             ///Checks to see if the category is DLC, and if it is enabled
             if (Category == 9 && DLC_Enabled)
-                ret += DLC[rand.Next(DLC.Length)];
+                ret += names.DLC[rand.Next(names.DLC.Length)];
             ///Checks for the disabled DLC, and if the Category is selected
             else if (Category == 9 && !DLC_Enabled)
                 //Recursion at its finest...
@@ -171,32 +192,32 @@ namespace SB_Content.Call_of_Duty.Randomizer
                 switch (Category)
                 {
                     case 0:
-                        ret += SMG[rand.Next(SMG.Length - 1)];
+                        ret += names.SMG[rand.Next(names.SMG.Length - 1)];
                         break;
                     case 1:
-                        ret += Shotgun[rand.Next(Shotgun.Length - 1)];
+                        ret += names.Shotgun[rand.Next(names.Shotgun.Length - 1)];
                         break;
                     case 2:
-                        ret += Pistol[rand.Next(Pistol.Length - 1)];
+                        ret += names.Pistol[rand.Next(names.Pistol.Length - 1)];
                         break;
                     case 3:
-                        ret += TacR[rand.Next(TacR.Length - 1)];
+                        ret += names.TacR[rand.Next(names.TacR.Length - 1)];
                         break;
                     case 4:
-                        ret += Sniper[rand.Next(Sniper.Length - 1)];
+                        ret += names.Sniper[rand.Next(names.Sniper.Length - 1)];
                         break;
                     case 5:
-                        ret += LMG[rand.Next(LMG.Length - 1)];
+                        ret += names.LMG[rand.Next(names.LMG.Length - 1)];
                         break;
                     case 6:
-                        ret += AR[rand.Next(AR.Length - 1)];
+                        ret += names.AR[rand.Next(names.AR.Length - 1)];
                         break;
                     case 7:
-                        ret += Melee[0];            //HARDCODED 0
+                        ret += names.Melee[0];            //HARDCODED 0
                         break;
                     case 8:
                         ret = explName;
-                        ret += ": "+Expl[rand.Next(Expl.Length)];
+                        ret += ": "+names.Expl[rand.Next(names.Expl.Length)];
                         break;
                 }
             }

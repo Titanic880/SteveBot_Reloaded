@@ -1,5 +1,5 @@
-﻿namespace SB_Content.Payday.Randomizer
-{
+﻿namespace SB_Content.Payday.PD2 
+{ 
     public static class Generic_Data
     {
         public readonly static string[] PerkDecks =

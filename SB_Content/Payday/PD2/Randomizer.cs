@@ -1,12 +1,10 @@
 ﻿using System.Linq;
 using System;
 
-using static SB_Content.Payday.Randomizer.Generic_Data;
+using static SB_Content.Payday.PD2.Generic_Data;
 
-namespace SB_Content.Payday.Randomizer
-{
-    public class PD2DataFile
-    {
+namespace SB_Content.Payday.PD2 {
+    public class Randomizer : IRandomizer {
         private readonly Random rand = new(DateTime.Now.Millisecond);
         #region Options
         /// <summary>
@@ -50,8 +48,7 @@ namespace SB_Content.Payday.Randomizer
         #endregion Randomized Items
 
         #region SetRandomized
-        public string GetResult()
-        {
+        public string GetResult() {
             return
             "Perk Deck: " + Current_Deck +
             "\nPrimary: " + PrimaryCat +
@@ -66,8 +63,7 @@ namespace SB_Content.Payday.Randomizer
         /// <summary>
         /// Sets all Random Values
         /// </summary>
-        public void RandomizeAll()
-        {
+        public void RandomizeAll() {
             RandPerkDeck();
             RandThrowable();
             RandPrimary();
@@ -77,32 +73,36 @@ namespace SB_Content.Payday.Randomizer
             RandArmor();
             RandDifficulty();
         }
-        public void Randomize(bool[] ToRandomize)
-        {
-            if (ToRandomize[0]) RandPerkDeck();
-            if (ToRandomize[1]) RandThrowable();
-            if (ToRandomize[2]) RandPrimary();
-            if (ToRandomize[3]) RandSecondary();
-            if (ToRandomize[4]) RandMelee();
-            if (ToRandomize[5]) RandDeployable();
-            if (ToRandomize[6]) RandArmor();
-            if (ToRandomize[7]) RandDifficulty();
+        public void Randomize(bool[] ToRandomize) {
+            if (ToRandomize[0])
+                RandPerkDeck();
+            if (ToRandomize[1])
+                RandThrowable();
+            if (ToRandomize[2])
+                RandPrimary();
+            if (ToRandomize[3])
+                RandSecondary();
+            if (ToRandomize[4])
+                RandMelee();
+            if (ToRandomize[5])
+                RandDeployable();
+            if (ToRandomize[6])
+                RandArmor();
+            if (ToRandomize[7])
+                RandDifficulty();
         }
         private void RandPerkDeck() => Current_Deck = PerkDecks[rand.Next(PerkDecks.Length - 1)];
         /// <summary>
         /// Sets a random Throwable, Checks for perk deck first
         /// </summary>
-        private void RandThrowable()
-        {
-            if (!DeckEquips.Contains(Current_Deck))
-            {
+        private void RandThrowable() {
+            if (!DeckEquips.Contains(Current_Deck)) {
                 Throwable = Throwables[rand.Next(Throwables.Length - 1)];
                 return;
             }
             //Checks if the current perk deck has an equipable, if it does sets it
             for (int i = 0; i < DeckEquips.Length; i++)
-                if (Current_Deck == DeckEquips[i])
-                {
+                if (Current_Deck == DeckEquips[i]) {
                     Throwable = DeckThrowables[i];
                     return;
                 }
@@ -110,8 +110,7 @@ namespace SB_Content.Payday.Randomizer
             Throwable = Throwables[rand.Next(Throwables.Length - 1)];
         }
 
-        public void RandPrimary()
-        {
+        public void RandPrimary() {
             if (Current_Deck == "Hitman" && HitmanSafeGuard)
                 PrimaryCat = Primaries[rand.Next(3) + 5];
             else
@@ -120,22 +119,18 @@ namespace SB_Content.Payday.Randomizer
         private void RandSecondary() => SecondaryCat = Secondaries[rand.Next(Secondaries.Length - 1)];
         private void RandMelee() => MeleeCat = Melees[rand.Next(Melees.Length - 1)];
         private void RandDeployable() => Deployable = Deployables[rand.Next(Deployables.Length - 1)];
-        private void RandArmor()
-        {
+        private void RandArmor() {
             //Checks for the grinder deck and checks the safeguard
-            if (Current_Deck == "Grinder" && GrinderSafeGuard)
-            {
+            if (Current_Deck == "Grinder" && GrinderSafeGuard) {
                 int rnd = rand.Next(2);
                 if (rnd == 1)
                     ArmorLv = "LightWeight Ballistic";
                 else
                     ArmorLv = "Two Piece Suit";
-            }
-            else
+            } else
                 ArmorLv = Armor[rand.Next(Armor.Length - 1)];
         }
-        private void RandDifficulty()
-        {
+        private void RandDifficulty() {
             Difficulty = Difficulties[rand.Next(Difficulties.Length) + 1];
             //Check for One down mechanic addition
             if (Allow_OneDown && rand.Next(2) == 1)

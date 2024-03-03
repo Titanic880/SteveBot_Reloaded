@@ -39,6 +39,10 @@
         }
         #endregion Links
         #region Logging
+        /// <summary>
+        /// Writes all Command attempts to a file
+        /// </summary>
+        /// <param name="message"></param>
         public static void UserCommand(Discord.WebSocket.SocketUserMessage message)
         {
             //Writes to file
@@ -46,6 +50,10 @@
             sW.WriteLine($"{message.CreatedAt.DateTime}:{message.Author}: {message.Content}");
             sW.Close();
         }
+        /// <summary>
+        /// Writes ALL user messages seen to a file
+        /// </summary>
+        /// <param name="message"></param>
         public static void UserMessages(Discord.WebSocket.SocketUserMessage message)
         {
             //Writes to file
@@ -53,6 +61,10 @@
             sW.WriteLine($"{message.CreatedAt.DateTime}:{message.Author}: {message.Content}");
             sW.Close();
         }
+        /// <summary>
+        /// Write Error provided to a file
+        /// </summary>
+        /// <param name="Error"></param>
         public static void ErrorMessages(string Error)
         {
             //Writes to file

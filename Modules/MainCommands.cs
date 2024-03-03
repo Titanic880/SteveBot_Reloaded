@@ -2,10 +2,8 @@
 using Discord;
 
 using SB_Content;
-using SB_Content.OilMan;
 using SB_Content.BlackJack;
 using SB_Content.Runescape;
-using SB_Content.Payday.Randomizer;
 
 namespace SteveBot_Rebuild.Modules
 {
@@ -672,7 +670,7 @@ namespace SteveBot_Rebuild.Modules
         public async Task PD2Randomize(string input = "all")
         {
             input = input.ToLower();
-            PD2DataFile pd2data = new();
+            SB_Content.Payday.PD2.Randomizer pd2data = new();
             switch (input)
             {
                 case "all":
@@ -695,15 +693,15 @@ namespace SteveBot_Rebuild.Modules
             EmbedBuilder EmbedBuilder = new EmbedBuilder()
                 .WithTitle($"Payday 2 Randomizer")
                 .WithDescription("React with the provided to change settings:" +
-                $"\n{BotProgram.emojis[0]} Randomize Perk Deck" +
-                $"\n{BotProgram.emojis[1]} Randomize Throwable" +
-                $"\n{BotProgram.emojis[2]} Randomize Primary" +
-                $"\n{BotProgram.emojis[3]} Randomize Secondary" +
-                $"\n{BotProgram.emojis[4]} Randomize Melee" +
-                $"\n{BotProgram.emojis[5]} Randomize Deployable" +
-                $"\n{BotProgram.emojis[6]} Randomize Armor" +
-                $"\n{BotProgram.emojis[7]} Randomize Difficulty" +
-                $"\n{BotProgram.emojis[9]} Randomize!"
+                "\n1️⃣ Randomize Perk Deck" +
+                "\n2️⃣ Randomize Throwable" +
+                "\n3️⃣ Randomize Primary" +
+                "\n4️⃣Randomize Secondary" +
+                "\n5️⃣ Randomize Melee" +
+                "\n6️⃣ Randomize Deployable" +
+                "\n7️⃣ Randomize Armor" +
+                "\n8️⃣ Randomize Difficulty" +
+                "\n✅ Randomize!"
                ).WithCurrentTimestamp();
             Embed embed = EmbedBuilder.Build();
             var item = await ReplyAsync(embed: embed);
@@ -749,7 +747,8 @@ namespace SteveBot_Rebuild.Modules
         }
         #endregion Call of Duty
         #region Oilman
-//[Command("om init")]
+        /*
+        [Command("om init")]
         private async Task InitOilman()
         {
             Tuple<bool, string> result = await OilmanDiscordInterface.InitilizeNewGame(Context.Message.Author);
@@ -772,20 +771,20 @@ namespace SteveBot_Rebuild.Modules
                 await item.AddReactionsAsync(new Emoji[] { ":one:", ":two:", ":three:" });
             }
         }
-        //[Command("om cancel")]
+        [Command("om cancel")]
         private async Task OilmanCancel()
         {
             string result = OilmanDiscordInterface.CancelGame(Context.Message.Author);
             await ReplyAsync(result);
         }
-        //[Command("om start")]
+        [Command("om start")]
         private async Task StartOilmanGame()
         {
             Embed result = await OilmanDiscordInterface.StartGame(Context.Message.Author);
             await ReplyAsync(embed: result);
             await OilmanDiscordInterface.StartTurn();
         }
-        //[Command("om Legend")]
+        [Command("om Legend")]
         private async Task OilmanLegend()
         {
             _ = await ReplyAsync(embed: OilmanDiscordInterface.BuildTileLegend());
@@ -801,30 +800,30 @@ namespace SteveBot_Rebuild.Modules
                 .WithFooter("Game Commands")
                 .Build());
         }
-        //[Command("om Buy")]
+        [Command("om Buy")]
         private async Task OilmanBuy(int Price, string Positionals)
         {
             string result = await OilmanDiscordInterface.BuyLand(Context.Message.Author, Positionals);
             await ReplyAsync(result);
             await OilmanBid(Price);
         }
-        //[Command("om bid")]
+        [Command("om bid")]
         private async Task OilmanBid(int amount)
         {
             Embed result = OilmanDiscordInterface.UserBid(Context.Message.Author, amount);
             _ = await ReplyAsync(embed: result);
         }
-        //[Command("om Claim")]
+        [Command("om Claim")]
         private async Task OilmanClaim()
         {
             await ReplyAsync(embed: OilmanDiscordInterface.ClaimLand(Context.Message.Author));
         }
-        //[Command("om Colors")]
+        [Command("om Colors")]
         private async Task OilmanColors()
         {
             var result = await ReplyAsync(embed: OilmanDiscordInterface.BuildColorSelector(Context.Message.Author));
             await result.AddReactionsAsync(OilmanDiscordInterface.GetColorReaction());
-        }
+        }*/
         #endregion Oilman
     }
 }

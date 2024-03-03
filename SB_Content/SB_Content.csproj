@@ -7,12 +7,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="OilMan\Blank_User.cs" />
+    <Compile Remove="OilMan\GameBoard.cs" />
+    <Compile Remove="OilMan\GameState.cs" />
+    <Compile Remove="OilMan\GameTile.cs" />
+    <Compile Remove="OilMan\OilmanDiscordInterface.cs" />
+    <Compile Remove="OilMan\Oilman_Player.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Discord.Net.Core" Version="3.12.0" />
     <PackageReference Include="Discord.Net.WebSocket" Version="3.12.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Payday\PD3\" />
+    <None Include="OilMan\Blank_User.cs" />
+    <None Include="OilMan\GameBoard.cs" />
+    <None Include="OilMan\GameState.cs" />
+    <None Include="OilMan\GameTile.cs" />
+    <None Include="OilMan\OilmanDiscordInterface.cs" />
+    <None Include="OilMan\Oilman_Player.cs" />
   </ItemGroup>
 
 </Project>

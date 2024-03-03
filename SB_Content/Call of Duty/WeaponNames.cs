@@ -1,6 +1,6 @@
 ﻿namespace SB_Content.Call_of_Duty
 {
-    public abstract class WeaponNames
+    public class WeaponNames
     {
         /// <summary>
         /// Name of each major Category of weapon
