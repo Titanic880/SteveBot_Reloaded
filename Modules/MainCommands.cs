@@ -705,7 +705,7 @@ namespace SteveBot_Rebuild.Modules
                ).WithCurrentTimestamp();
             Embed embed = EmbedBuilder.Build();
             var item = await ReplyAsync(embed: embed);
-            await item.AddReactionsAsync(BotProgram.emojis.Where(x => x != BotProgram.emojis[8]).ToArray());
+            await item.AddReactionsAsync(BotProgram.emojis.Where(x => x != new Emoji("9989")).ToArray());//✅
         }
         #endregion Payday
         #region Call of Duty
@@ -730,16 +730,16 @@ namespace SteveBot_Rebuild.Modules
             EmbedBuilder EmbedBuilder = new EmbedBuilder()
     .WithTitle($"COD Cold War Randomizer")
     .WithDescription("React with the provided to change settings:" +
-    $"\n{BotProgram.emojis[0]} Randomize Weapon" +
-    $"\n{BotProgram.emojis[1]} DLC Enabled" +
-    $"\n{BotProgram.emojis[2]} Randomize Box Ban" +
-    $"\n{BotProgram.emojis[3]} Randomize Wall Ban" +
-    $"\n{BotProgram.emojis[4]} Randomize Field Upgrade" +
-    $"\n{BotProgram.emojis[5]} Randomize Perk Order" +
-    $"\n{BotProgram.emojis[6]} Randomize Support Item" +
-    $"\n{BotProgram.emojis[7]} Randomize Tactical Item" +
-    $"\n{BotProgram.emojis[8]} Randomize Lethal Item" +
-    $"\n{BotProgram.emojis[9]} Randomize!"
+    $"\n1️⃣ Randomize Weapon" +
+    $"\n2️⃣ DLC Enabled" +
+    $"\n3️⃣ Randomize Box Ban" +
+    $"\n4️⃣ Randomize Wall Ban" +
+    $"\n5️⃣ Randomize Field Upgrade" +
+    $"\n6️⃣ Randomize Perk Order" +
+    $"\n7️⃣ Randomize Support Item" +
+    $"\n8️⃣ Randomize Tactical Item" +
+    $"\n9️⃣ Randomize Lethal Item" +
+    $"\n✅  Randomize!"
    ).WithCurrentTimestamp();
             Embed embed = EmbedBuilder.Build();
             var item = await ReplyAsync(embed: embed);

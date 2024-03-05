@@ -1,0 +1,22 @@
+{
+  "WeaponCategories": [
+    "SMG",
+    "Shotgun",
+    "Pistol",
+    "Tactical Rifle",
+    "Snipers",
+    "LMG'S",
+    "Assault Rifles",
+    "Melee",
+    "Explosives",
+    "DLC"
+  ]
+  "SMG": [
+    "MP5",
+    "Milano 821",
+    "Ak-74u",
+    "KSP 45",
+    "Bullfrog",
+    "Mac-10"
+  ]
+}

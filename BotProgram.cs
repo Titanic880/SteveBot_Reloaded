@@ -11,7 +11,7 @@ using SteveBot_Rebuild.Modules;
 namespace SteveBot_Rebuild {
     internal class BotProgram {
         public const char PrefixChar = '$';
-        public static readonly Emoji[] emojis = new Emoji[]
+        public static Emoji[] emojis { get; } = new Emoji[]
     {
             "1️⃣" ,
             "2️⃣" ,
