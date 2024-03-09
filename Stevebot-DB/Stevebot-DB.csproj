@@ -7,6 +7,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="DB_Content_JSON\PayDay2.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="DB_Content_JSON\PayDay2.json" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />

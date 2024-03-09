@@ -6,7 +6,7 @@ using SteveBot_Rebuild.Modules;
 namespace SteveBot_Rebuild {
     internal class ReactionHandler {
 
-        public static async Task HandlerEntry(Cacheable<IUserMessage, ulong> msgCache, Cacheable<IMessageChannel, ulong> msgChannel, SocketReaction reaction) {
+        public static async Task HandlerEntry(Cacheable<IUserMessage, ulong> msgCache, SocketReaction reaction) {
             if (reaction.User.Value.IsBot) {
                 return;
             }
@@ -14,13 +14,13 @@ namespace SteveBot_Rebuild {
             if(message is null) {
                 return;
             }
-            //Data Validation??
-            IEmote checkmarkemote = message.Reactions.Keys.FirstOrDefault(x => x.Name == "✅")!;
+            //Data Validation
+            IEmote checkmarkemote = message.Reactions.Keys.FirstOrDefault(x => x == new Emoji("\u2705"))!;
             ReactionMetadata data = message.Reactions[checkmarkemote];
 
             //Attempting to use early return to increase readability (unsure of how it will work in prod)
             //if (checkmarkemote.Name == "✅" && data.IsMe && data.ReactionCount > 1) {
-            if (checkmarkemote.Name != "✅" || !data.IsMe || data.ReactionCount < 1) {
+            if (!data.IsMe || data.ReactionCount < 1) {
                 return;
             }
 
@@ -29,10 +29,10 @@ namespace SteveBot_Rebuild {
 
             switch (message.Embeds.FirstOrDefault()!.Title.Split(':')[0]) {
             case "Payday 2 Randomizer":
-                result = ReactionHandler.RandomizerHandling(message,8,new SB_Content.Payday.PD2.Randomizer());
+                result = ReactionHandler.RandomizerHandling(message,7,new SB_Content.Payday.PD2.Randomizer());
                 break;
             case "COD Cold War Randomizer":
-                result = ReactionHandler.RandomizerHandling(message,9,new SB_Content.Call_of_Duty.Randomizer.ZombRandLib());
+                result = ReactionHandler.RandomizerHandling(message,8,new SB_Content.Call_of_Duty.Randomizer.ZombRandLib());
                 break;
             /*case "Oilman Game":
                 if (message.Embeds.FirstOrDefault()!.Footer.ToString() == "Start Info")
@@ -67,92 +67,20 @@ namespace SteveBot_Rebuild {
             }
             await reaction.Channel.SendMessageAsync($"<@{reaction.UserId}> ", embed: result);
         }
-
-        private static Embed? Payday2Handling(IUserMessage message, SocketReaction reaction) {
-            try {
-                //In switch items
-                Emoji[] emoj = new Emoji[8];
-                Array.Copy(emojis, emoj, 8);
-                bool[] rand = new bool[8];
-
-                //Data Validation??
-                IEmote checkmarkemote = message.Reactions.Keys.FirstOrDefault(x => x.Name == "✅")!;
-                ReactionMetadata data = message.Reactions[checkmarkemote];
-                //Attempting to use early return to increase readability (unsure of how it will work in prod)
-                //if (checkmarkemote.Name == "✅" && data.IsMe && data.ReactionCount > 1) {
-                if (checkmarkemote.Name != "✅" || !data.IsMe || data.ReactionCount < 1) {
-                    return null;
-                }
-
-                //loop through the reactions and check if its been added (in this case its setting toggles)
-                for (int i = 0; i < emoj.Length; i++) {
-                    if (message.Reactions[emoj[i]].ReactionCount != 1) {
-                        rand[i] = true;
-                    }
-                }
-
-                //Run the Randomizer
-                SB_Content.Payday.PD2.Randomizer pd2data = new();
-                pd2data.Randomize(rand);
-
-                //Build User visual
-                EmbedBuilder builder = new EmbedBuilder()
-                            .WithTitle("Payday 2 Randomizer Results")
-                            .WithTimestamp(DateTime.UtcNow)
-                            .WithDescription(pd2data.GetResult());
-
-                return builder.Build();
-            } catch (Exception e) {
-                CommandFunctions.ErrorMessages(e.Message);
-                return null;
-            }
-        }
-        private static Embed? CODColdWarHandling(IUserMessage message, SocketReaction reaction) {
-            //In switch items
-            Emoji[] emoj = new Emoji[9];
-            Array.Copy(emojis, emoj, 9);
-            bool[] rand = new bool[9];
-            //Data Validation??
-            IEmote checkmarkemote = message.Reactions.Keys.FirstOrDefault(x => x.Name == "✅")!;
-            ReactionMetadata data = message.Reactions[checkmarkemote];
-            
-            //Attempting to use early return to increase readability (unsure of how it will work in prod)
-            //if (checkmarkemote.Name == "✅" && data.IsMe && data.ReactionCount > 1) {
-            if (checkmarkemote.Name != "✅" || !data.IsMe || data.ReactionCount < 1) {
-                return null;
-            }
-
-            //loop through the reactions and check if its been added (in this case its setting toggles)
-            for (int i = 0; i < emoj.Length; i++) {
-                if (message.Reactions[emoj[i]].ReactionCount != 1) {
-                    rand[i] = true;
-                }
-            }
-            SB_Content.Call_of_Duty.Randomizer.ZombRandLib randlib = new();
-            randlib.ApplyOptions(rand);
-            randlib.Randomize();
-
-            EmbedBuilder builder = new EmbedBuilder()
-                            .WithTitle("Cold War Randomizer Results")
-                            .WithTimestamp(DateTime.UtcNow)
-                            .WithDescription(randlib.GetResult());
-            return builder.Build();
-        }
-
         private static Embed? RandomizerHandling(IUserMessage message, int DataSize, SB_Content.IRandomizer RandomizerLibrary) {
             //In switch items
             Emoji[] emoj = new Emoji[DataSize];
             Array.Copy(emojis, emoj, DataSize);
             bool[] rand = new bool[DataSize];
             //loop through the reactions and check if its been added (in this case its setting toggles)
-            for (int i = 0; i < emoj.Length; i++) {
+            for (int i = 0; i < DataSize; i++) {
                 if (message.Reactions[emoj[i]].ReactionCount != 1) {
                     rand[i] = true;
                 }
             }
             RandomizerLibrary.Randomize(rand);
             EmbedBuilder builder = new EmbedBuilder()
-                            .WithTitle("Cold War Randomizer Results")
+                            .WithTitle("Randomizer Results")
                             .WithTimestamp(DateTime.UtcNow)
                             .WithDescription(RandomizerLibrary.GetResult());
             return builder.Build();

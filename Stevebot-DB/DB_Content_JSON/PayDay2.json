@@ -1,0 +1,103 @@
+﻿{
+    "PerkDecks" : [
+        "Crew Chief",
+        "Muscle",
+        "Armorer",
+        "Rogue",
+        "Hitman",
+        "Crook",
+        "Burglar",
+        "Infiltrator",
+        "Scociopath",
+        "Gambler",
+        "Grinder",
+        "Yakuza",
+        "Ex-President",
+        "Anarchist",
+        "Biker",
+        "Kingpin",
+        "Sicario",
+        "Stoic",
+        "Tag Team",
+        "Hacker",
+        "Leech"
+    ],
+    "DeckEquips": [
+        "Kingpin",
+        "Sicario",
+        "Stoic",
+        "Tag Team",
+        "Hacker",
+        "Leech"
+    ],
+    "DeckThrowables": [
+        "Injector",
+        "Smoke Bomb",
+        "Stoic's Hip Flask",
+        "Gas Dispenser",
+        "Pocket ECM Device",
+        "Symbiote"
+    ],
+    "Primaries": [
+        "Assault Rifles",
+        "DMR",
+        "Shotguns",
+        "LMG's",
+        "Sniper",
+        "Akimbo Pistol",
+        "Akimbo SMG",
+        "Akimbo Shotgun",
+        "Special"
+    ],
+    "Secondaries": [
+        "Light Pistol",
+        "Heavy Pistol", 
+        "SMG",
+        "Special",
+        "Shotgun"
+    ],
+    "Melees": [
+        "None", 
+        "Stun Type", 
+        "Blades",
+        "Blunted",
+        "MONEY!!!",
+        "Spoon"
+    ],
+    "Throwables": [
+        "Explosive",
+        "Stun (Flashbang/Electric Shocker)",
+        "Renewable",
+        "Perk Deck"
+    ],
+    "Armor": [
+        "Two Piece Suit",
+        "Ballistic Vest",
+        "LightWeight Ballistic",
+        "Heavy Ballistic",
+        "Flak Jacket",
+        "Combined Tactical",
+        "ICTV"
+    ],
+    "Deployables": [
+        "Ammo Bag",
+        "Armor Bag",
+        "Body Bag Case",
+        "Doctor Bag",
+        "Ecm",
+        "First aid Kit",
+        "Sentry",
+        "Suppressed Sentry",
+        "Trip Mine",
+        "Empty"
+    ],
+    "Difficulties": [
+        "Normal",
+        "Hard",
+        "Very Hard",
+        "Overkill",
+        "Mayhem",
+        "DeathWish",
+        "DeathSentence"
+    ]
+}

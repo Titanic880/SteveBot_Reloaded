@@ -34,6 +34,7 @@
         public static void RemoveLink(int input)
         {
             Links.RemoveAt(input);
+            //TODO: DB INTERGRATION
             foreach (string tmp in Links)
                 File.WriteAllText(linkPath, "\n" + tmp);
         }

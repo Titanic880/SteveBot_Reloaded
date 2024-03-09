@@ -6,10 +6,7 @@ namespace Stevebot_DB.Framework_ENT
 {
     internal class SB_DBContext : DbContext
     {
-        internal DbSet<SB_Content.Runescape.RSJson> Rs_Data { get; set; }
-        internal DbSet<SB_Content.Payday.PD2.Perk_Deck> PD2_PerkDecks { get; set; }
-        internal DbSet<SB_Content.Payday.PD2.Equipment> PD2_Equipment { get; set; }
-        internal DbSet<SB_Content.Payday.PD2.Difficulty> PD2_Difficulty { get; set; }
+        internal DbSet<SB_Content.Payday.PD2.ListObject> ListObjects { get; set; }
 
 
         //internal DbSet<SB_Content.OilMan.GameState> Oilman_States { get; set; }

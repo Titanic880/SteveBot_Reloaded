@@ -12,5 +12,9 @@ namespace SB_Content.Payday.PD3
         public void Randomize(bool[] ToRandomize) {
             throw new NotImplementedException();
         }
+
+        public bool SetSafeGuards(bool[] Toggles) {
+            throw new NotImplementedException();
+        }
     }
 }

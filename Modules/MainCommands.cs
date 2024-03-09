@@ -3,7 +3,6 @@ using Discord;
 
 using SB_Content;
 using SB_Content.BlackJack;
-using SB_Content.Runescape;
 
 namespace SteveBot_Rebuild.Modules
 {
@@ -18,7 +17,6 @@ namespace SteveBot_Rebuild.Modules
             EmbedBuilder EmbedBuilder = new EmbedBuilder()
                     .WithTitle($"Command prefix is '{BotProgram.PrefixChar}'")
                     .WithDescription("  help : displays this command" +
-                        "\nrshelp : Runescape Help Command" +
                         "\npd2rand : Randomizer for Payday 2" +
                         "\ncwzRand : Randomizer for Black ops Cold war Zombies" +
                         "\nslap : you what?" +
@@ -159,8 +157,6 @@ namespace SteveBot_Rebuild.Modules
         {
             await ReplyAsync("twas but a test!");
         }
-        [Command("ice")]
-        public async Task IceTest() => await ReplyAsync(".pc Ice Dye");
 
         #endregion TEST
         #region Bans
@@ -354,306 +350,6 @@ namespace SteveBot_Rebuild.Modules
             timerSeconds++;
         }
         #endregion BlackJack
-        #region Runescape 
-
-        /// <summary>
-        /// Gets local File contents
-        /// </summary>
-        /// <returns></returns>
-        private static RSJson GetRSFile() {
-            string FileContents = "";
-            using (StreamReader sr = new("Files/Runescape.json"))
-            {
-                FileContents = sr.ReadToEndAsync().Result;
-            }
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<RSJson>(FileContents)!;
-        }
-        private static bool SetRSFile(RSJson json)
-        {
-            try
-            {
-                using StreamWriter sw = new("Files/Runescape.json");
-                sw.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(json, Newtonsoft.Json.Formatting.Indented));
-                return true;
-            }
-            catch (Exception e)
-            {
-                CommandFunctions.ErrorMessages(e.Message);
-                return false;
-            }
-        }
-        [Command("rsupdateprice")]
-        public async Task UpdatePrice()
-        {
-            await ReplyAsync("Command under construction, Check back later!");
-            return;
-            /*
-            DateTime CompTime = DateTime.UtcNow;
-            RSJson rsf = GetRSFile();
-
-            //Adjust this to change update interval (API Dependant)
-            CompTime = CompTime.AddHours(-1); 
-
-            //Check for spam update call
-            if (rsf.LastUpdated >= CompTime && !rsf.UpdatedCall)
-            {
-                rsf.UpdatedCall = true;
-                SetRSFile(rsf);
-                await ReplyAsync("File has been updated too recently!");
-                return;
-            }
-            if (rsf.UpdatedCall)
-                return;
-                
-            try
-            {
-                //Get Data from GE
-
-
-                //Apply to format
-
-
-                //push to file
-                SetRSFile(rsf);
-                await ReplyAsync("Prices have been updated!");
-            }
-            catch (Exception e)
-            {
-                CommandFunctions.ErrorMessages(e.Message);
-                await ReplyAsync("A problem has occoured when fetching new data.");
-            }*/
-        }
-        [Command("rshelp")]
-        public async Task RShelp()
-        {
-            EmbedBuilder EmbedBuilder = new EmbedBuilder()
-        .WithTitle($"Command prefix is '{BotProgram.PrefixChar}' (Commands are not case sensitive)")
-        .WithDescription("  rshelp : displays this command" +
-            "\nritual Help" +
-            "\nRSpriceHelp : specific help for setting prices" +
-            "\nrssetprice : used to set price of an item" +
-            "\nrsGetPrices : used to get all prices" +
-            "\nRSritual : Get the price of a given ritual (no spaces in ritual)" +
-            "\nrsAlteration : GlyphX(X being tier) <amount>" +
-            ""
-            )
-        .WithCurrentTimestamp();
-            Embed embed = EmbedBuilder.Build();
-            await ReplyAsync(embed: embed);
-        }
-        [Command("rssetprice")]
-        public async Task RSSetPrice(string item, int price)
-        {
-            item = item.ToLower();
-            //Data Points needed: Price_inks Price_Plasm, Type  
-            RSJson rsf = GetRSFile();
-            switch (item)
-            {
-                case "ash":
-                    rsf.AshPrice = price;
-                    break;
-                case "vial":
-                    rsf.VialOfWater = price;
-                    break;
-                case "ecto":
-                    rsf.Ectoplasm = price;
-                    break;
-                case "lplasm":
-                    rsf.NecroplasmPrices[0] = price;
-                    break;
-                case "gplasm":
-                    rsf.NecroplasmPrices[1] = price;
-                    break;
-                case "pplasm":
-                    rsf.NecroplasmPrices[2] = price;
-                    break;
-                case "rink":
-                    rsf.InkPrices[0] = price;
-                    break;
-                case "gink":
-                    rsf.InkPrices[1] = price;
-                    break;
-                case "pink":
-                    rsf.InkPrices[2] = price;
-                    break;
-                default:
-                    await ReplyAsync("Invalid input, action cancelled");
-                    return;
-            }
-            SetRSFile(rsf);
-            await ReplyAsync($"Price of {item} updated to {price}!");
-        }
-        [Command("rsGetPrices")]
-        public async Task RsGetPrices()
-        {
-            RSJson rsf = GetRSFile();
-
-            EmbedBuilder EmbedBuilder = new EmbedBuilder()
-                .WithTitle($"Current Bot Prices:")
-                .WithDescription($"AshPrice: {rsf.AshPrice}" +
-                                 "\nEctoplasm: " + rsf.Ectoplasm +
-                                 "\nLesser Necroplasm: " + rsf.NecroplasmPrices[0] +
-                                 "\nGreater Necroplasm: " + rsf.NecroplasmPrices[1] +
-                                 "\nPowerful Necroplasm: " + rsf.NecroplasmPrices[2] +
-                                 "\nRegular Ink: " + rsf.InkPrices[0] +
-                                 "\nGreater Ink: " + rsf.InkPrices[1] +
-                                 "\nPowerful Ink: " + rsf.InkPrices[2]
-).WithCurrentTimestamp();
-            Embed embed = EmbedBuilder.Build();
-            await ReplyAsync(embed: embed);
-        }
-        [Command("RSpriceHelp")]
-        public async Task RSPriceHelp()
-        {
-            EmbedBuilder embedBuilder = new EmbedBuilder()
-                .WithTitle("Ritual Price Set Guide (Command then provided)")
-                .WithFooter("For rssetprice Command")
-                .WithDescription("ash <price>" +
-                "\necto <price>" +
-                "\nlplasm <price>" +
-                "\ngplasm <price>" +
-                "\npplasm <price>" +
-                "\nrink <price>" +
-                "\ngink <price>" +
-                "\npink <price>"
-).WithCurrentTimestamp();
-            Embed embed = embedBuilder.Build();
-            await ReplyAsync(embed: embed);
-        }
-        [Command("RSritualHelp")]
-        public async Task RSRitualHelp()
-        {
-            EmbedBuilder embedBuilder = new EmbedBuilder()
-                .WithTitle("Ritual specific Info")
-                .WithFooter("For rsritual Command")
-                .WithDescription(
-                "\nlplasm : Lesser Necroplasm" +
-                "\nless   : Lesser Essence" +
-                "\nlcomm  : Lesser Communion" +
-                "\nlens   : Lesser Ensoul" +
-                "\ngplasm : Greater Necroplasm" +
-                "\ngess   : Greater Essence" +
-                "\ngcomm  : Greater Communion" +
-                "\nens    : Ensoul" +
-                "\npplasm : Powerful Necroplasm" +
-                "\npess   : Powerful Essence" +
-                "\npcomm  : Powerful Communion" +
-                "\ngens   : Greater Ensoul"
-).WithCurrentTimestamp();
-            Embed embed = embedBuilder.Build();
-            await ReplyAsync(embed: embed);
-        }
-        [Command("RSritual")]
-        public async Task RSRitualMoney(string input)
-        {
-            RSJson rsf = GetRSFile();
-            string msg = "Setup Cost: ";
-            switch (input)
-            {
-                case "lplasm":
-                    msg += rsf.RitualSetup_Cost(RS3Rituals.LesNecro);
-                    break;
-                case "less":
-                    msg += rsf.RitualSetup_Cost(RS3Rituals.LesEss);
-                    break;
-                case "lcomm":
-                    msg += rsf.RitualSetup_Cost(RS3Rituals.LesCommun);
-                    break;
-                case "lens":
-                    msg += rsf.RitualSetup_Cost(RS3Rituals.LesEnsoul);
-                    break;
-                case "gplasm":
-                    msg += rsf.RitualSetup_Cost(RS3Rituals.GreNecro);
-                    break;
-                case "gess":
-                    msg += rsf.RitualSetup_Cost(RS3Rituals.GreEss);
-                    break;
-                case "gcomm":
-                    msg += rsf.RitualSetup_Cost(RS3Rituals.GreCommun);
-                    break;
-                case "ens":
-                    msg += rsf.RitualSetup_Cost(RS3Rituals.GreEnsoul);
-                    break;
-                case "pplasm":
-                    msg += rsf.RitualSetup_Cost(RS3Rituals.PowNecro);
-                    break;
-                case "pess":
-                    msg += rsf.RitualSetup_Cost(RS3Rituals.PowEss);
-                    break;
-                case "pcomm":
-                    msg += rsf.RitualSetup_Cost(RS3Rituals.PowCommun);
-                    break;
-                case "gens":
-                    msg += rsf.RitualSetup_Cost(RS3Rituals.PowEnsoul);
-                    break;
-                default:
-                    msg = "ritual not found";
-                    break;
-            }
-            await ReplyAsync(msg);
-        }
-
-
-        /// <summary>
-        /// Takes the glyph/rank and the amount and outputs the cost
-        /// </summary>
-        /// <param name="input"></param>
-        /// <param name="amount"></param>
-        /// <returns></returns>
-        [Command("RSAlteration")]
-        public async Task RSAlteration(string input, int amount = 1)
-        {
-            input = input.ToLower();
-            RSJson rsf = GetRSFile();
-            RS3Glyphs glyph;
-            switch (input)
-            {
-                case "multiply1":
-                    glyph = RS3Glyphs.Multiply1;
-                    break;
-                case "multiply2":
-                    glyph = RS3Glyphs.Multiply2;
-                    break;
-                case "multiply3":
-                    glyph = RS3Glyphs.Multiply3;
-                    break;
-                case "protection1":
-                    glyph = RS3Glyphs.Protection1;
-                    break;
-                case "protection2":
-                    glyph = RS3Glyphs.Protection2;
-                    break;
-                case "protection3":
-                    glyph = RS3Glyphs.Protection3;
-                    break;
-                case "speed1":
-                    glyph = RS3Glyphs.Speed1;
-                    break;
-                case "speed2":
-                    glyph = RS3Glyphs.Speed2;
-                    break;
-                case "speed3":
-                    glyph = RS3Glyphs.Speed3;
-                    break;
-                case "attraction1":
-                    glyph = RS3Glyphs.Attraction1;
-                    break;
-                case "attraction2":
-                    glyph = RS3Glyphs.Attraction2;
-                    break;
-                case "attraction3":
-                    glyph = RS3Glyphs.Attraction3;
-                    break;
-                default:
-                    await ReplyAsync("invalid Glyph");
-                    return;
-            }
-            int cost = rsf.AlterationCost(glyph);
-            cost *= amount;
-
-            await ReplyAsync($"The total cost of {amount} of {input} is: {cost}");
-        }
-        #endregion Runescape
         #region Payday
         [Command("pd2Help")]
         public async Task PD2Help()
@@ -705,7 +401,7 @@ namespace SteveBot_Rebuild.Modules
                ).WithCurrentTimestamp();
             Embed embed = EmbedBuilder.Build();
             var item = await ReplyAsync(embed: embed);
-            await item.AddReactionsAsync(BotProgram.emojis.Where(x => x != new Emoji("9989")).ToArray());//✅
+            await item.AddReactionsAsync(BotProgram.emojis.Where(x => (x != new Emoji("\u2705")) || (x != new Emoji("\u0039\u20E3"))).ToArray());
         }
         #endregion Payday
         #region Call of Duty

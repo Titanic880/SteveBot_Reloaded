@@ -1,32 +1,26 @@
-﻿using System.Linq;
-using System;
-
+﻿using System;
+using System.Linq;
 using static SB_Content.Payday.PD2.Generic_Data;
 
 namespace SB_Content.Payday.PD2 {
-    public class Randomizer : IRandomizer {
+    internal class NewRando : IRandomizer {
         private string Result = "";
         private readonly Random rand;
 
-        public Randomizer() {
+        public NewRando() {
             rand = new Random(DateTime.Now.Millisecond);
         }
         public string GetResult() {
             return Result;
         }
         public bool SetSafeGuards(bool[] Toggles) {
-            if (Toggles.Length < 3) {
+            if(Toggles.Length < 3) {
                 return false;
             }
             HitmanSafeGuard = Toggles[0];
             GrinderSafeGuard = Toggles[1];
             Allow_OneDown = Toggles[2];
             return true;
-        }
-
-        public string RandomizeAll() {
-            Randomize(new bool[] { true, true, true, true, true, true, true, true });
-            return GetResult();
         }
         /// <summary>
         /// bool[] length of 8 expected
@@ -37,7 +31,7 @@ namespace SB_Content.Payday.PD2 {
             string perkdeck = "";
             string ret = "";
             if (ToRandomize[0]) {
-                perkdeck = PerkDeck();
+                perkdeck  = PerkDeck();
                 ret += "Perk Deck: " + perkdeck;
             }
             if (ToRandomize[2]) {
@@ -53,7 +47,7 @@ namespace SB_Content.Payday.PD2 {
                 ret += "\nMelee: " + Melee();
             }
             if (ToRandomize[5]) {
-                ret += "\nDeployable: " + Deployable();
+               ret +="\nDeployable: " + Deployable();
             }
             if (ToRandomize[6]) {
                 ret += "\nArmor: " + Armor(perkdeck);

@@ -247,6 +247,11 @@ namespace SB_Content.Call_of_Duty.Randomizer {
                 OrderedPerks += (i+1)+": "+random[i] + '\n';
             OrderedPerks = OrderedPerks.Trim('\n');
         }
+
+        public bool SetSafeGuards(bool[] Toggles) {
+            //None Used For This System
+            throw new NotImplementedException();
+        }
         #endregion Randomize
     }
 }
