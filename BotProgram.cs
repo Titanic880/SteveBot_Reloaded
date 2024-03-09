@@ -4,25 +4,29 @@ using Discord;
 
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using System.Timers;
 
 using SteveBot_Rebuild.Modules;
 
 namespace SteveBot_Rebuild {
     internal class BotProgram {
         public const char PrefixChar = '$';
-        public static Emoji[] emojis { get; } = new Emoji[]
+
+
+        /// <summary>
+        /// https://www.fileformat.info/info/emoji/list.htm
+        /// </summary>
+        public static Emoji[] emojis { get; } = new Emoji[] //using get for references
     {
-            "1️⃣" ,
-            "2️⃣" ,
-            "3️⃣" ,
-            "4️⃣" ,
-            "5️⃣" ,
-            "6️⃣" ,
-            "7️⃣" ,
-            "8️⃣" ,
-            "9️⃣" ,
-            "✅" ,
+            new("\u0031\u20E3"), //1
+            new("\u0032\u20E3"), //2
+            new("\u0033\u20E3"), //3
+            new("\u0034\u20E3"), //4
+            new("\u0035\u20E3"), //5
+            new("\u0036\u20E3"), //6
+            new("\u0037\u20E3"), //7
+            new("\u0038\u20E3"), //8
+            new("\u0039\u20E3"), //9
+            new("\u2705")        //WhiteCheckMark
     };
 
         private readonly DiscordSocketClient _client;
@@ -32,7 +36,13 @@ namespace SteveBot_Rebuild {
         public BotProgram() {
             //Allows bot to see messages https://discordnet.dev/guides/v2_v3_guide/v2_to_v3_guide.html
             var config = new DiscordSocketConfig()
-            { GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent };
+            { GatewayIntents =
+            GatewayIntents.Guilds |
+            GatewayIntents.GuildMessageReactions |
+            GatewayIntents.GuildMessages |
+            GatewayIntents.GuildEmojis |
+            GatewayIntents.MessageContent 
+            };
 
             _client = new DiscordSocketClient(config);
             _commands = new CommandService();
@@ -140,7 +150,7 @@ namespace SteveBot_Rebuild {
         /// <param name="reaction"></param>
         /// <returns></returns>
         private Task HandleReactionAdd(Cacheable<IUserMessage, ulong> msgCache, Cacheable<IMessageChannel, ulong> msgChannel, SocketReaction reaction) {
-            return ReactionHandler.HandlerEntry(msgCache,msgChannel,reaction);
+            return ReactionHandler.HandlerEntry(msgCache,reaction);
         }
     }
 }
