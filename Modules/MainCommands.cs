@@ -4,16 +4,13 @@ using Discord;
 using SB_Content;
 using SB_Content.BlackJack;
 
-namespace SteveBot_Rebuild.Modules
-{
-    public partial class MainCommands : ModuleBase<SocketCommandContext>
-    {
+namespace SteveBot_Rebuild.Modules {
+    public partial class MainCommands : ModuleBase<SocketCommandContext> {
         public bool LongTask = false;
         private int timerSeconds = 0;
         #region Help Commands
         [Command("help")]
-        public async Task Help()
-        {
+        public async Task Help() {
             EmbedBuilder EmbedBuilder = new EmbedBuilder()
                     .WithTitle($"Command prefix is '{BotProgram.PrefixChar}'")
                     .WithDescription("  help : displays this command" +
@@ -32,8 +29,7 @@ namespace SteveBot_Rebuild.Modules
             await ReplyAsync(embed: embed);
         }
         [Command("calculator")]
-        public async Task Calc()
-        {
+        public async Task Calc() {
             EmbedBuilder EmbedBuilder = new EmbedBuilder()
         .WithTitle($"Command prefix is '{BotProgram.PrefixChar}'")
         .WithDescription("  calculator : displays this command" +
@@ -49,8 +45,7 @@ namespace SteveBot_Rebuild.Modules
             await ReplyAsync(embed: embed);
         }
         [Command("linking")]
-        public async Task Linking()
-        {
+        public async Task Linking() {
             EmbedBuilder EmbedBuilder = new EmbedBuilder()
         .WithTitle("Command prefix is '!'")
         .WithDescription("  linking : displays this command" +
@@ -66,95 +61,39 @@ namespace SteveBot_Rebuild.Modules
         #endregion Help Commands
         #region Standard Commands
         [Command("ping")]
-        public async Task Ping()
-        {
+        public async Task Ping() {
             await ReplyAsync("Pong");
         }
         [Command("pong")]
-        public async Task Pong()
-        {
+        public async Task Pong() {
             await ReplyAsync("That's my line!");
         }
         [Command("kek")]
-        public async Task Kek()
-        {
+        public async Task Kek() {
             await ReplyAsync("LOL");
         }
         [Command("slap")]
-        public async Task Slap(IGuildUser? user = null)
-        {
+        public async Task Slap(IGuildUser? user = null) {
             if (user == null)
                 await ReplyAsync("You Slapped yourself!");
             else
                 await ReplyAsync("You Slapped " + user.Mention);
         }
-        [Command("roll")]
-        public async Task Roll(int dice_size = 6)
-        {
-            await ReplyAsync($"You rolled a  {CommandFunctions.DiceRoll(dice_size + 1)}");
+        [Command("dice")]
+        public async Task Roll(int dice_size = 6) {
+            await ReplyAsync($"You rolled a {CommandFunctions.DiceRoll(dice_size + 1)}");
         }
         [Command("k")]
-        public async Task K()
-        {
+        public async Task K() {
             await ReplyAsync("https://tenor.com/view/bet-gif-5301020");
         }
 
 
         #endregion Standard Commands
-        #region Media
-        [Command("addlink")]
-        public async Task AddLink(string link)
-        {
-            string linktest = link[..5];
-            if (linktest.ToLower() != "https")
-            {
-                await ReplyAsync("Please provide a link with https at the beginning");
-            }
-            int tmp = CommandFunctions.AddLink(link);
-            await ReplyAsync($"Link added successfully and is #{tmp}");
-        }
-
-        [Command("randomlink")]
-        public async Task RandomLink()
-        {
-            string link = CommandFunctions.LinksPub[new Random().Next(CommandFunctions.LinksPub.Count)];
-            await ReplyAsync(link);
-        }
-        [Command("getlink")]
-        public async Task GetLinknum(int input)
-        {
-            if (input == 0) input = 1;
-            if (input > CommandFunctions.LinksPub.Count)
-            {
-                await ReplyAsync($"Your index exceeds the size of the list, the list is currently: {input} Links long");
-                return;
-            }
-            await ReplyAsync(CommandFunctions.LinksPub[input - 1]);
-        }
-        [Command("LLL")]
-        public async Task LinkListLength()
-        {
-            await ReplyAsync($"The list is: {CommandFunctions.LinksPub.Count} links long!!!");
-        }
-        [Command("dellink")]
-        public async Task DeleteLink(int input)
-        {
-            if (input == 0) input = 1;
-            if (input > CommandFunctions.LinksPub.Count)
-            {
-                await ReplyAsync($"Your index exceeds the size of the list, the list is currently: {input}" +
-                                  "\nLinks long");
-                return;
-            }
-
-            CommandFunctions.RemoveLink(input - 1);
-            await ReplyAsync("Link removed from list!");
-        }
-        #endregion Media
+        
         #region TEST
         [Command("test")]
-        public async Task Test()
-        {
+        public async Task Test() {
             await ReplyAsync("twas but a test!");
         }
 
@@ -162,11 +101,9 @@ namespace SteveBot_Rebuild.Modules
         #region Bans
         [Command("ban")]
         [RequireUserPermission(GuildPermission.Administrator, ErrorMessage = "YOU DONT GOT ENOUGH COFFEE FOR THIS!")]
-        public async Task BanMember(IGuildUser? user = null, [Remainder] string reason = "Default Reason")
-        {
+        public async Task BanMember(IGuildUser? user = null, [Remainder] string reason = "Default Reason") {
 
-            if (user == null)
-            {
+            if (user == null) {
                 await ReplyAsync("Please specify a user!");
                 return;
             }
@@ -185,10 +122,8 @@ namespace SteveBot_Rebuild.Modules
 
         [Command("unban")]
         [RequireUserPermission(GuildPermission.Administrator, ErrorMessage = "You have no coffee for me, find some.")]
-        public async Task UnBanMember(IGuildUser? user = null, [Remainder] string reason = "Default Reason")
-        {
-            if (user == null)
-            {
+        public async Task UnBanMember(IGuildUser? user = null, [Remainder] string reason = "Default Reason") {
+            if (user == null) {
                 await ReplyAsync("Please specify a user!");
                 return;
             }
@@ -207,10 +142,8 @@ namespace SteveBot_Rebuild.Modules
         }
         [Command("kick")]
         [RequireUserPermission(GuildPermission.Administrator, ErrorMessage = "I need some coffee before I kick someone.")]
-        public async Task Kick(IGuildUser? user = null, [Remainder] string reason = "Default Reason")
-        {
-            if (user == null)
-            {
+        public async Task Kick(IGuildUser? user = null, [Remainder] string reason = "Default Reason") {
+            if (user == null) {
                 await ReplyAsync("Please specify a user!");
                 return;
             }
@@ -230,65 +163,16 @@ namespace SteveBot_Rebuild.Modules
             await ReplyAsync(embed: embed);
         }
         #endregion Bans
-        #region Calc    
-        [Command("math")]
-        public async Task Math(string userinput)
-        {
-            double output = Calculator.Complex_Equation(userinput);
-            EmbedBuilder EmbedBuilder = new EmbedBuilder()
-                .WithDescription($"Your final output is {output}")
-                .WithCurrentTimestamp();
-            Embed embed = EmbedBuilder.Build();
-            await ReplyAsync(embed: embed);
-        }
-        [Command("dec2hex")]
-        public async Task Dec2Hex(int Num1)
-        {
-            string output = Calculator.Dec2hex(Num1);
-
-            EmbedBuilder EmbedBuilder = new EmbedBuilder()
-                 .WithDescription($"{Num1} = {output}")
-                 .WithCurrentTimestamp();
-            Embed embed = EmbedBuilder.Build();
-            await ReplyAsync(embed: embed);
-        }
-        [Command("hex2dec")]
-        public async Task Hex2Dec(string Num1)
-        {
-            string output = Calculator.Hex2dec(Num1).ToString();
-
-            EmbedBuilder EmbedBuilder = new EmbedBuilder()
-                 .WithDescription($"{Num1} = {output}")
-                 .WithCurrentTimestamp();
-            Embed embed = EmbedBuilder.Build();
-            await ReplyAsync(embed: embed);
-        }
-        [Command("fact")]
-        public async Task Factorial(int Num1)
-        {
-            string output = Calculator.Factorial(Num1).ToString();
-
-            EmbedBuilder EmbedBuilder = new EmbedBuilder()
-                 .WithDescription($"!{Num1} = {output}")
-                 .WithCurrentTimestamp();
-            Embed embed = EmbedBuilder.Build();
-            await ReplyAsync(embed: embed);
-        }
-        #endregion Calc
+        
         #region BlackJack
         [Command("blackjack Autoplay")]
-        public async Task BJAutoPlay(int games = 1)
-        {
-            if (LongTask)
-            {
+        public async Task BJAutoPlay(int games = 1) {
+            if (LongTask) {
                 await ReplyAsync("There is already a designated long task running" +
                                  "\nPlease wait for it to finish");
-            }
-            else
-            {
+            } else {
 
-                if (games >= 100000)
-                {
+                if (games >= 100000) {
                     await ReplyAsync("Too many games selected, I don't wanna play that much!");
                     return;
                 }
@@ -297,22 +181,18 @@ namespace SteveBot_Rebuild.Modules
                 if (games == 0)
                     games = 1;
                 string output = "";
-                if (games == 1)
-                {
+                if (games == 1) {
                     Blackjack bj = new();
                     Player winner = bj.PlayGame();
                     output = bj.Win();
-                }
-                else
-                {
+                } else {
                     System.Timers.Timer Time = new(1000);
                     Time.Elapsed += Time_Elapsed;
                     int gamesplayed = games;
                     int[] output1 = new int[] { 0, 0 };
 
                     Time.Start();
-                    for (int i = 0; i < games; i++)
-                    {
+                    for (int i = 0; i < games; i++) {
                         Blackjack game = new();
                         Player winner = game.PlayGame();
                         Console.WriteLine(i + "/" + games);
@@ -345,15 +225,13 @@ namespace SteveBot_Rebuild.Modules
             }
         }
 
-        private void Time_Elapsed(object? sender, System.Timers.ElapsedEventArgs? e)
-        {
+        private void Time_Elapsed(object? sender, System.Timers.ElapsedEventArgs? e) {
             timerSeconds++;
         }
         #endregion BlackJack
         #region Payday
         [Command("pd2Help")]
-        public async Task PD2Help()
-        {
+        public async Task PD2Help() {
             EmbedBuilder EmbedBuilder = new EmbedBuilder()
 .WithTitle($"Command prefix is '{BotProgram.PrefixChar}' (Commands are not case sensitive)")
 .WithDescription("pd2rando <setting> (only supports all currently)"
@@ -362,30 +240,8 @@ namespace SteveBot_Rebuild.Modules
             Embed embed = EmbedBuilder.Build();
             await ReplyAsync(embed: embed);
         }
-        [Command("pd2Rand")]
-        public async Task PD2Randomize(string input = "all")
-        {
-            input = input.ToLower();
-            SB_Content.Payday.PD2.Randomizer pd2data = new();
-            switch (input)
-            {
-                case "all":
-                    pd2data.RandomizeAll();
-                    break;
-            }
-
-            //build from switch results
-            EmbedBuilder EmbedBuilder = new EmbedBuilder()
-                .WithTitle($"Payday 2 Randomizer")
-                .WithDescription(pd2data.GetResult())
-                .WithCurrentTimestamp();
-            Embed embed = EmbedBuilder.Build();
-            await ReplyAsync(embed: embed);
-        }
-
-        [Command("PD2RandReact")]
-        public async Task PD2Rand()
-        {
+        [Command("PD2Rand")]
+        public async Task PD2Rand() {
             EmbedBuilder EmbedBuilder = new EmbedBuilder()
                 .WithTitle($"Payday 2 Randomizer")
                 .WithDescription("React with the provided to change settings:" +
@@ -401,18 +257,16 @@ namespace SteveBot_Rebuild.Modules
                ).WithCurrentTimestamp();
             Embed embed = EmbedBuilder.Build();
             var item = await ReplyAsync(embed: embed);
-            await item.AddReactionsAsync(BotProgram.emojis.Where(x => (x != new Emoji("\u2705")) || (x != new Emoji("\u0039\u20E3"))).ToArray());
+            IEnumerable<Emoji> Reaction = BotProgram.Emojis.Except(new Emoji[]{ new("\u0039\u20E3") });
+            await item.AddReactionsAsync(Reaction);
         }
         #endregion Payday
         #region Call of Duty
         [Command("cwzRandfast")]
-        public async Task CODCWRandomizer()
-        {
+        public async Task CODCWRandomizer() {
             SB_Content.Call_of_Duty.Randomizer.ZombRandLib randlib = new();
 
             randlib.TrueRandomize();
-
-            //build from switch results
             EmbedBuilder EmbedBuilder = new EmbedBuilder()
                 .WithTitle($"Payday 2 Randomizer")
                 .WithDescription(randlib.GetResult())
@@ -421,8 +275,7 @@ namespace SteveBot_Rebuild.Modules
             await ReplyAsync(embed: embed);
         }
         [Command("cwzRand")]
-        public async Task CODCWReatRandomzier()
-        {
+        public async Task CODCWReatRandomzier() {
             EmbedBuilder EmbedBuilder = new EmbedBuilder()
     .WithTitle($"COD Cold War Randomizer")
     .WithDescription("React with the provided to change settings:" +
@@ -439,87 +292,8 @@ namespace SteveBot_Rebuild.Modules
    ).WithCurrentTimestamp();
             Embed embed = EmbedBuilder.Build();
             var item = await ReplyAsync(embed: embed);
-            await item.AddReactionsAsync(BotProgram.emojis);
+            await item.AddReactionsAsync(BotProgram.Emojis);
         }
         #endregion Call of Duty
-        #region Oilman
-        /*
-        [Command("om init")]
-        private async Task InitOilman()
-        {
-            Tuple<bool, string> result = await OilmanDiscordInterface.InitilizeNewGame(Context.Message.Author);
-            await ReplyAsync(result.Item2);
-            if (result.Item1)
-            {
-                var item = await ReplyAsync(embed:
-                    new EmbedBuilder()
-                    .WithTitle("Oilman Game:1")
-                    .WithDescription("To Choose which layout use the provided reactions"
-                    + "\n`Layout 1: Original Games layout`"
-                    + "\n`Layout 2: Original Game Alberta layout`"
-                    + "\n`Layout 3: 100% random Generated tiles (not balanced)`"
-                    + "\nTo add users to the game, use !Add @User"
-                    + "\nTo remove users, use !remove @User"
-                    + "\nTo Start the game, use !oilman go"
-                    + "\n(please wait for Confirm check(or x) after reacting to this command)")
-                    .WithFooter("Start Info")
-                    .Build());
-                await item.AddReactionsAsync(new Emoji[] { ":one:", ":two:", ":three:" });
-            }
-        }
-        [Command("om cancel")]
-        private async Task OilmanCancel()
-        {
-            string result = OilmanDiscordInterface.CancelGame(Context.Message.Author);
-            await ReplyAsync(result);
-        }
-        [Command("om start")]
-        private async Task StartOilmanGame()
-        {
-            Embed result = await OilmanDiscordInterface.StartGame(Context.Message.Author);
-            await ReplyAsync(embed: result);
-            await OilmanDiscordInterface.StartTurn();
-        }
-        [Command("om Legend")]
-        private async Task OilmanLegend()
-        {
-            _ = await ReplyAsync(embed: OilmanDiscordInterface.BuildTileLegend());
-            _ = await ReplyAsync(embed: new EmbedBuilder()
-                .WithTitle("Oilman Game")
-                .WithDescription(
-                "Game board is A-O across;\n 1-12 down: Top left tile would be a1, bottom right would be o12"
-                + $"\nom buy <price> <region>: <region> can be a range or individual tiles EX:\n`A1:B4` or `A1,A2,A3,A4,A5,B1,B2,B3,B4,B5` or `A1:B4,B5`"
-                + $"\nom Bid x : puts in a bid of x for the currently selected tiles"
-                + $"\nom Claim : claims currently selected tiles"
-                + $"\n"
-                ).WithCurrentTimestamp()
-                .WithFooter("Game Commands")
-                .Build());
-        }
-        [Command("om Buy")]
-        private async Task OilmanBuy(int Price, string Positionals)
-        {
-            string result = await OilmanDiscordInterface.BuyLand(Context.Message.Author, Positionals);
-            await ReplyAsync(result);
-            await OilmanBid(Price);
-        }
-        [Command("om bid")]
-        private async Task OilmanBid(int amount)
-        {
-            Embed result = OilmanDiscordInterface.UserBid(Context.Message.Author, amount);
-            _ = await ReplyAsync(embed: result);
-        }
-        [Command("om Claim")]
-        private async Task OilmanClaim()
-        {
-            await ReplyAsync(embed: OilmanDiscordInterface.ClaimLand(Context.Message.Author));
-        }
-        [Command("om Colors")]
-        private async Task OilmanColors()
-        {
-            var result = await ReplyAsync(embed: OilmanDiscordInterface.BuildColorSelector(Context.Message.Author));
-            await result.AddReactionsAsync(OilmanDiscordInterface.GetColorReaction());
-        }*/
-        #endregion Oilman
     }
 }
