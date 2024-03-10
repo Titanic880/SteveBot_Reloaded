@@ -1,7 +1,5 @@
 ﻿using Discord.WebSocket;
 using Discord;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using SteveBot_Rebuild.Modules;
 
 namespace SteveBot_Rebuild {
     internal class ReactionHandler {
@@ -17,16 +15,11 @@ namespace SteveBot_Rebuild {
             //Data Validation
             IEmote checkmarkemote = message.Reactions.Keys.FirstOrDefault(x => x == new Emoji("\u2705"))!;
             ReactionMetadata data = message.Reactions[checkmarkemote];
-
-            //Attempting to use early return to increase readability (unsure of how it will work in prod)
-            //if (checkmarkemote.Name == "✅" && data.IsMe && data.ReactionCount > 1) {
             if (!data.IsMe || data.ReactionCount < 1) {
                 return;
             }
 
-            //In switch items
             Embed? result;
-
             switch (message.Embeds.FirstOrDefault()!.Title.Split(':')[0]) {
             case "Payday 2 Randomizer":
                 result = ReactionHandler.RandomizerHandling(message,7,new SB_Content.Payday.PD2.Randomizer());
@@ -62,15 +55,14 @@ namespace SteveBot_Rebuild {
             }
 
             if (result is null) {
-                await reaction.Channel.SendMessageAsync($"<@{reaction.UserId}> I am sorry, a problem has occoured while trying to randomize your data!");
+                await reaction.Channel.SendMessageAsync($"<@{reaction.UserId}> I am sorry, a problem has occoured while trying to act on your input!");
                 return;
             }
             await reaction.Channel.SendMessageAsync($"<@{reaction.UserId}> ", embed: result);
         }
         private static Embed? RandomizerHandling(IUserMessage message, int DataSize, SB_Content.IRandomizer RandomizerLibrary) {
-            //In switch items
             Emoji[] emoj = new Emoji[DataSize];
-            Array.Copy(emojis, emoj, DataSize);
+            Array.Copy(BotProgram.Emojis, emoj, DataSize);
             bool[] rand = new bool[DataSize];
             //loop through the reactions and check if its been added (in this case its setting toggles)
             for (int i = 0; i < DataSize; i++) {
@@ -85,24 +77,6 @@ namespace SteveBot_Rebuild {
                             .WithDescription(RandomizerLibrary.GetResult());
             return builder.Build();
         }
-
-
-    /// <summary>
-        /// TODO: REPLACE WHAT EVER THE LIVING FUCK THIS SHIT IS
-        /// </summary>
-    public static readonly Emoji[] emojis = new Emoji[]
-    {
-            "1️⃣" ,
-            "2️⃣" ,
-            "3️⃣" ,
-            "4️⃣" ,
-            "5️⃣" ,
-            "6️⃣" ,
-            "7️⃣" ,
-            "8️⃣" ,
-            "9️⃣" ,
-            "✅" ,
-    };
     }
 
 }

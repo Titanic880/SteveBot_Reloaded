@@ -6,7 +6,8 @@ namespace SB_Content
 {
     public static class Calculator
     {
-        private static readonly char[] ops = { '^', '*', '/', '-', '+' };
+        private static readonly char[] ops = { '^', '*', '/', '-', '+'/*, 's','i','n','c','o','t','a'*/};
+
         /// <summary>
         /// Takes a full equation and calculates it
         /// </summary>
@@ -15,8 +16,9 @@ namespace SB_Content
         public static double Complex_Equation(string input)
         {
             //Catch Empty input
-            if (input == "" || input.Length < 2)
+            if (input == "" || input.Length < 2) {
                 return double.NaN;
+            }
             //Break and check for math information
             List<string> tmp = Complex_Organize(input);
 
@@ -45,49 +47,50 @@ namespace SB_Content
                 '*' => (Convert.ToDouble(value1) * Convert.ToDouble(value2)).ToString(),
                 '/' => (Convert.ToDouble(value2) / Convert.ToDouble(value1)).ToString(),
                 '^' => Math.Pow(Convert.ToDouble(value2), Convert.ToDouble(value1)).ToString(),
-                _ => "0",
+                _ => "0"
             };
         }
-        private static List<string> Complex_Organize(string input)
-        {
+        /*
+        private static string CalcTrig(string value,char op) {
+            return op switch {
+                's' => Math.Sin(Convert.ToDouble(value)).ToString(),
+                'c' => Math.Cos(Convert.ToDouble(value)).ToString(),
+                't' => Math.Tan(Convert.ToDouble(value)).ToString(),
+                _ => "0"
+            };
+        }*/
+
+        private static List<string> Complex_Organize(string input) {
             List<string> tmp = new();
             string bracket = "";
             bool brack = false;
+
             string placeholder = "";
-            foreach (char a in input)
-            {
-                if (a == '(')
-                {
+            foreach (char a in input) {
+                if (a == '(') {
                     brack = true;
                     //x() auto complete
-                    if (placeholder != "")
-                    {
+                    if (placeholder != "") {
                         tmp.Add(placeholder);
                         tmp.Add("*");
                         placeholder = "";
                     }
                     continue;
                 }
-                if (brack || a == ')')
-                {
-                    if (a == ')')
-                    {
+                if (brack || a == ')') {
+                    if (a == ')') {
                         brack = false;
                         //Recursively solve the equation
                         tmp.Add(Complex_Equation(bracket).ToString());
                         continue;
-                    }
-                    else
-                    {
+                    } else {
                         bracket += a;
                         continue;
                     }
                 }
                 //Check for operator (allows bigger than 0-9 operations)
-                if (ops.Contains(a))
-                {
-                    if (placeholder != "")
-                    {
+                if (ops.Contains(a)) {
+                    if (placeholder != "") {
                         tmp.Add(placeholder);
                         placeholder = "";
                     }
@@ -97,11 +100,25 @@ namespace SB_Content
                 placeholder += a;
             }
             //Catch Missing Values (Better option?)
-            if (placeholder != "")
+            if (placeholder != "") {
                 tmp.Add(placeholder);
+            }
             return tmp;
         }
-
+        /*
+        private static bool CheckTrig(string input) {
+            bool Trig = false;
+            if (input.ToLower().Contains("sin")) {
+                Trig = true;
+            }
+            if (input.ToLower().Contains("cos")) {
+                Trig = true;
+            }
+            if (input.ToLower().Contains("tan")) {
+                Trig = true;
+            }
+            return Trig;
+        }*/
         #region Conversions
         /// <summary>
         /// Takes a number and converts it to Hexcidecimal

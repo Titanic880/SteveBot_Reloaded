@@ -3,7 +3,6 @@
 namespace SteveBot_Rebuild {
     internal class Program {
         static void Main() {
-            //Checks to see if all nessecary directories exist, if not it generates them
             if (File_Check()) {
                 _ = new BotProgram();
             }
@@ -27,10 +26,11 @@ namespace SteveBot_Rebuild {
                 result = false;
             }
 
-            if (!File.Exists(CommandFunctions.linkPath))
+            if (!File.Exists(CommandFunctions.linkPath)) {
                 File.Create(CommandFunctions.linkPath).Close();
-            else
+            } else {
                 CommandFunctions.UpdateLinks();
+            }
 
             if (!File.Exists(CommandFunctions.ErrorPath)) {
                 File.Create(CommandFunctions.ErrorPath).Close();
@@ -41,7 +41,6 @@ namespace SteveBot_Rebuild {
             if (!File.Exists(CommandFunctions.usermessagesPath)) {
                 File.Create(CommandFunctions.usermessagesPath).Close();
             }
-
             return result;
         }
     }
