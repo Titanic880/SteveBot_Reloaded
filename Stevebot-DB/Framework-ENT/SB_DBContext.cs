@@ -7,6 +7,7 @@ namespace Stevebot_DB.Framework_ENT
     internal class SB_DBContext : DbContext
     {
         internal DbSet<SB_Content.Payday.PD2.ListObject> ListObjects { get; set; }
+        internal DbSet<DB_Content.DataLogging> DataLogs { get; set; }
 
 
         //internal DbSet<SB_Content.OilMan.GameState> Oilman_States { get; set; }
