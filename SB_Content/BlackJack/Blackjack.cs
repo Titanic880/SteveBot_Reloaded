@@ -1,7 +1,6 @@
 ﻿namespace SB_Content.BlackJack
 {
-    public class Card
-    {
+    public class Card(int arg, Card.CardSuit suit) {
         public enum CardSuit
         {
             Hearts,
@@ -9,14 +8,8 @@
             Clubs,
             Diamonds
         }
-        public int Value;
-        public CardSuit Suit;
-
-        public Card(int arg, CardSuit suit)
-        {
-            Value = arg;
-            Suit = suit;
-        }
+        public int Value = arg;
+        public CardSuit Suit = suit;
     }
     public class Blackjack
     {

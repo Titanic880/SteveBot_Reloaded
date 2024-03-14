@@ -1,11 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="OilMan\Blank_User.cs" />
     <Compile Remove="OilMan\GameBoard.cs" />
@@ -14,19 +12,18 @@
     <Compile Remove="OilMan\OilmanDiscordInterface.cs" />
     <Compile Remove="OilMan\Oilman_Player.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Discord.Net.Core" Version="3.12.0" />
     <PackageReference Include="Discord.Net.WebSocket" Version="3.12.0" />
   </ItemGroup>
-
   <ItemGroup>
-    <None Include="OilMan\Blank_User.cs" />
     <None Include="OilMan\GameBoard.cs" />
     <None Include="OilMan\GameState.cs" />
     <None Include="OilMan\GameTile.cs" />
     <None Include="OilMan\OilmanDiscordInterface.cs" />
     <None Include="OilMan\Oilman_Player.cs" />
   </ItemGroup>
-
+  <ItemGroup>
+    <None Include="OilMan\Blank_User.cs" />
+  </ItemGroup>
 </Project>

@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace SB_Content.BlackJack
 {
-    public class Player
-    {
+    public class Player(bool dealer = false) {
         #region Variables
         private Card? DealHidden = null;
-        private readonly bool isdealer = false;
+        private readonly bool isdealer = dealer;
         public bool IsDealer { get { return isdealer; } }
-        private readonly List<Card> deck = new();
+        private readonly List<Card> deck = [];
         public int CardValue
         {
             get
@@ -45,12 +44,9 @@ namespace SB_Content.BlackJack
                     return High;
             }
         }
+
         #endregion Variables
         #region Logic
-        public Player(bool dealer = false)
-        {
-            isdealer = dealer;
-        }
         public void TakeCard(Card card)
         {
             if (IsDealer && DealHidden == null)

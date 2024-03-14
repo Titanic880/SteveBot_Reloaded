@@ -1,5 +1,6 @@
 ﻿using Discord.WebSocket;
 using Discord;
+using CommandModule;
 
 namespace SteveBot_Rebuild {
     internal class ReactionHandler {
@@ -22,10 +23,12 @@ namespace SteveBot_Rebuild {
             Embed? result;
             switch (message.Embeds.FirstOrDefault()!.Title.Split(':')[0]) {
             case "Payday 2 Randomizer":
-                result = ReactionHandler.RandomizerHandling(message,7,new SB_Content.Payday.PD2.Randomizer());
+                result = ReactionHandler.RandomizerHandling(
+                    message,7,new SB_Content.Payday.PD2.Randomizer());
                 break;
             case "COD Cold War Randomizer":
-                result = ReactionHandler.RandomizerHandling(message,8,new SB_Content.Call_of_Duty.Randomizer.ZombRandLib());
+                result = ReactionHandler.RandomizerHandling(
+                    message,8,new SB_Content.Call_of_Duty.Randomizer.ZombRandLib());
                 break;
             /*case "Oilman Game":
                 if (message.Embeds.FirstOrDefault()!.Footer.ToString() == "Start Info")
@@ -62,7 +65,7 @@ namespace SteveBot_Rebuild {
         }
         private static Embed? RandomizerHandling(IUserMessage message, int DataSize, SB_Content.IRandomizer RandomizerLibrary) {
             Emoji[] emoj = new Emoji[DataSize];
-            Array.Copy(BotProgram.Emojis, emoj, DataSize);
+            Array.Copy(Command_Identifiers.Emojis, emoj, DataSize);
             bool[] rand = new bool[DataSize];
             //loop through the reactions and check if its been added (in this case its setting toggles)
             for (int i = 0; i < DataSize; i++) {

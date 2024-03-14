@@ -4,6 +4,7 @@ namespace SteveBot_Rebuild.Modules
 {
     static class CommandFunctions
     {
+        public static bool DBLog = true;
         #region Links
         private static List<string> Links = new();
         public static List<string> LinksPub { get { return Links; } }
@@ -41,51 +42,68 @@ namespace SteveBot_Rebuild.Modules
                 File.WriteAllText(linkPath, "\n" + tmp);
         }
         #endregion Links
-        #region Logging_DB
-        public static void LogUserCommand(Discord.WebSocket.SocketUserMessage userMessage) {
-            Stevebot_DB.Framework_ENT.SB_DBLogic.Log(Stevebot_DB.DB_Content.LoggingType.Info, userMessage.Content);
+
+        #region Logging_Entry
+        public static void Log_UserCommand(Discord.WebSocket.SocketUserMessage userMessage) {
+            if (DBLog) {
+                DBLogUserCommand(userMessage);
+            } else {
+                FileUserCommand(userMessage);
+            }
         }
-        public static void LogUserMessage(Discord.WebSocket.SocketUserMessage userMessage) {
-            Stevebot_DB.Framework_ENT.SB_DBLogic.Log(Stevebot_DB.DB_Content.LoggingType.Info, userMessage.Content);
-        }
-        public static void LogWarn(string Warning) {
-            Stevebot_DB.Framework_ENT.SB_DBLogic.Log(Stevebot_DB.DB_Content.LoggingType.Warning, "System", Warning);
+        public static void Log_UserMessage(Discord.WebSocket.SocketUserMessage userMessage) {
+            if (DBLog) {
+                DBLogUserMessage(userMessage);
+            } else {
+                FileUserMessages(userMessage);
+            }
         }
         public static void LogError(string Error) {
+            if (DBLog) {
+                DBLogError(Error);
+            } else {
+                FileErrorMessages(Error);
+            }
+        }
+        public static void LogWarning(string warning) {
+            if (DBLog) {
+                DBLogWarn(warning);
+            } 
+        }
+        #endregion Logging_Entry
+        #region Logging_DB
+        private static void DBLogUserCommand(Discord.WebSocket.SocketUserMessage userMessage) {
+            Stevebot_DB.Framework_ENT.SB_DBLogic.Log(Stevebot_DB.DB_Content.LoggingType.Info, userMessage.Content);
+        }
+        private static void DBLogUserMessage(Discord.WebSocket.SocketUserMessage userMessage) {
+            Stevebot_DB.Framework_ENT.SB_DBLogic.Log(Stevebot_DB.DB_Content.LoggingType.Info, userMessage.Content);
+        }
+        private static void DBLogWarn(string Warning) {
+            Stevebot_DB.Framework_ENT.SB_DBLogic.Log(Stevebot_DB.DB_Content.LoggingType.Warning, "System", Warning);
+        }
+        private static void DBLogError(string Error) {
             Stevebot_DB.Framework_ENT.SB_DBLogic.Log(Stevebot_DB.DB_Content.LoggingType.Error,"System",Error);
         }
         #endregion
         #region Logging_File
-        public static void UserCommand(Discord.WebSocket.SocketUserMessage message)
-        {
+        private static void FileUserCommand(Discord.WebSocket.SocketUserMessage message) { 
             //Writes to file
             StreamWriter sW = File.AppendText(usercommandsPath);
             sW.WriteLine($"{message.CreatedAt.DateTime}:{message.Author}: {message.Content}");
             sW.Close();
         }
-        public static void UserMessages(Discord.WebSocket.SocketUserMessage message)
-        {
+        private static void FileUserMessages(Discord.WebSocket.SocketUserMessage message) {
             //Writes to file
             StreamWriter sW = File.AppendText(usermessagesPath);
             sW.WriteLine($"{message.CreatedAt.DateTime}:{message.Author}: {message.Content}");
             sW.Close();
         }
-        public static void ErrorMessages(string Error)
-        {
-            LogError(Error);
-            /*
+        private static void FileErrorMessages(string Error) {
             //Writes to file
             StreamWriter sW = File.AppendText(Error);
             sW.WriteLine($"{DateTime.UtcNow}: {Error}");
-            sW.Close();*/
+            sW.Close();
         }
         #endregion Logging_File
-        #region DiceGames
-        public static string DiceRoll(int dice_size)
-        {
-            Random rand = new();
-            return rand.Next(dice_size).ToString();
-        }
-        #endregion DiceGames
     }
 }

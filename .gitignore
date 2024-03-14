@@ -370,3 +370,5 @@ auth.json
 *.jpeg
 *.psd
 *.txt
+/The input text has too many parameters.
+/There must be at least one character of whitespace between arguments.

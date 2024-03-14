@@ -4,4 +4,7 @@
     <ActiveDebugProfile>Docker</ActiveDebugProfile>
     <_LastSelectedProfileId>C:\Users\Mitch\Desktop\Coding\C#\SteveBot-Rebuild\Properties\PublishProfiles\registry.hub.docker.com_titanic880.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
+  </PropertyGroup>
 </Project>
