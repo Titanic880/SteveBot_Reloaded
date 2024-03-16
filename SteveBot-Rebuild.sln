@@ -12,7 +12,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stevebot-DB", "Stevebot-DB\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SB_Content", "SB_Content\SB_Content.csproj", "{34F1392A-C299-44A3-833A-A57CA7A7C1E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandModule", "..\CommandModule\CommandModule.csproj", "{F2E47CE5-511C-47E8-9D1D-57412056D40C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandModule", "CommandModule\CommandModule.csproj", "{F2E47CE5-511C-47E8-9D1D-57412056D40C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

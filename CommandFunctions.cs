@@ -1,12 +1,10 @@
-﻿using Discord;
-
-namespace SteveBot_Rebuild.Modules
+﻿namespace SteveBot_Rebuild.Modules
 {
     static class CommandFunctions
     {
         public static bool DBLog = true;
         #region Links
-        private static List<string> Links = new();
+        private static List<string> Links = [];
         public static List<string> LinksPub { get { return Links; } }
         public const string linkPath         = "Files/Links.txt";
         public const string usercommandsPath = "Files/UserCommands.txt";
@@ -20,7 +18,7 @@ namespace SteveBot_Rebuild.Modules
             if (strlst.Count == 0)
             {
                 Console.WriteLine("Links list was empty, Please check Links File");
-                Links ??= new List<string>();
+                Links ??= [];
                 return;
             }
             Links = strlst;
