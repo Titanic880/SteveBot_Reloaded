@@ -65,9 +65,9 @@ namespace SB_Content.BlackJack
         }
         private bool Dturn(Player oppo)
         {
-            if (DealHidden != null)
+            if (DealHidden is not null)
             {
-                deck.Add(DealHidden);
+                deck.Add(DealHidden.Value);
                 DealHidden = null;
             }
             if (CardValue >= oppo.CardValue)

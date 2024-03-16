@@ -1,16 +1,5 @@
 ﻿namespace SB_Content.BlackJack
 {
-    public class Card(int arg, Card.CardSuit suit) {
-        public enum CardSuit
-        {
-            Hearts,
-            Spades,
-            Clubs,
-            Diamonds
-        }
-        public int Value = arg;
-        public CardSuit Suit = suit;
-    }
     public class Blackjack
     {
         readonly Player dealer = new(true);
