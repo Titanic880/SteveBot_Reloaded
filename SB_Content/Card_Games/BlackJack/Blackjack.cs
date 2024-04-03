@@ -1,4 +1,4 @@
-﻿namespace SB_Content.BlackJack
+﻿namespace SB_Content.Card_Games.BlackJack
 {
     public class Blackjack
     {
@@ -52,7 +52,5 @@
             }
         }
         public string Win() => msg;
-
-
     }
 }

@@ -3,7 +3,7 @@
 namespace SteveBot_Rebuild {
     internal class Program {
         static void Main() {
-            if (File_Check()) {
+           if (File_Check()) {
                 _ = new BotProgram();
             }
             return;
@@ -41,6 +41,10 @@ namespace SteveBot_Rebuild {
             if (!File.Exists(CommandFunctions.usermessagesPath)) {
                 File.Create(CommandFunctions.usermessagesPath).Close();
             }
+            if (!Stevebot_DB.Framework_ENT.HellDiverLogic.UpdateDatabase()) {
+                result = false;
+            }
+
             return result;
         }
     }

@@ -3,6 +3,7 @@
 namespace CommandModule {
     public static class Command_Identifiers {
         public const char Command_Prefix = '$';
+        public const int VERSION = 1001;
 
         /// <summary>
         /// https://www.fileformat.info/info/emoji/list.htm

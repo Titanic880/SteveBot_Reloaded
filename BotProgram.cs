@@ -46,24 +46,13 @@ namespace SteveBot_Rebuild {
             //logs the bot into discord
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
-            await Task.Delay(-1);
-        }
-        /*
-        private bool Tim_Elapsed() {
-            if (_client.LoginState != LoginState.LoggedIn) {
-                try {
-                    _client.LogoutAsync();
-                    _client.LoginAsync(TokenType.Bot, File.ReadAllText("Files/auth.json"));
-                    Console.WriteLine($"Steve needed some coffee.");
-                } catch (Exception ex) {
-                    Console.WriteLine(ex.Message);
-                    CommandFunctions.LogError(ex.Message);
-                    return false;
-                }
+            while (true) {
+                await Task.Delay(600000);
+                Stevebot_DB.Framework_ENT.HellDiverLogic.UpdateDatabase();
             }
-            return true;
-        }*/
-        private async Task Tim_Elapsed(Exception exception) {
+        }
+
+        private async Task Reconnect(Exception exception) {
             if (_client.LoginState != LoginState.LoggedIn) {
                 try {
                     await _client.LogoutAsync();
@@ -89,7 +78,7 @@ namespace SteveBot_Rebuild {
             //registers anything tagged as 'Task' to the set of commands that can be called
             _client.MessageReceived += HandleCommandAsync;
             _client.ReactionAdded += HandleReactionAdd;
-            _client.Disconnected += Tim_Elapsed;
+            _client.Disconnected += Reconnect;
 
             await _commands.AddModulesAsync(Assembly.LoadFile("/app/bin/Debug/net8.0/CommandModule.dll"),_services);
         }

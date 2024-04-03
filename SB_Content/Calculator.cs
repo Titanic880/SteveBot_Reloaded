@@ -6,7 +6,7 @@ namespace SB_Content
 {
     public static class Calculator
     {
-        private static readonly char[] ops = { '^', '*', '/', '-', '+'/*, 's','i','n','c','o','t','a'*/};
+        private static readonly char[] ops = ['^', '*', '/', '-', '+'/*, 's','i','n','c','o','t','a'*/];
 
         /// <summary>
         /// Takes a full equation and calculates it
@@ -61,7 +61,7 @@ namespace SB_Content
         }*/
 
         private static List<string> Complex_Organize(string input) {
-            List<string> tmp = new();
+            List<string> tmp = [];
             string bracket = "";
             bool brack = false;
 

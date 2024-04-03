@@ -1,10 +1,10 @@
 ﻿using Discord.Commands;
 using Discord;
-
-using SB_Content.BlackJack;
 using CommandModule;
+using SB_Content.Card_Games.BlackJack;
 
-namespace SteveBot_Rebuild.Modules {
+namespace SteveBot_Rebuild.Modules
+{
     public partial class MainCommands : ModuleBase<SocketCommandContext> {
         public bool LongTask = false;
         private int timerSeconds = 0;
